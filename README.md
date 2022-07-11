@@ -2,7 +2,7 @@
 
 ## Description
 
-This app will allow a user to keep track of any current shiny Pokémon hunts that they have going on. It will contain a list of all 
+This app will allow a user to keep track of any current shiny Pokémon hunts that they have going on. It will contain a list of all current hunts for the current user. Clicking on one will take the user to a page with more detail about the Pokémon selected and the ability to increase the current encounters for that Pokémon.
 
 ## Pages
 
