@@ -23,3 +23,6 @@ This app will allow a user to keep track of any current shiny Pokémon hunts tha
     * (Optional) Check to see if Pokémon exists through error message with PokéAPI
     * (Optional) Store shiny hunting odds on the app like [this website](https://jmeech.github.io/) or [this website](https://shinytrack.night.coffee/#/shiny/track)
 * Create New Account
+* Hall of Fame
+    * Shows a list of every caught shiny Pokémon
+    * Can sort by number of encounters
