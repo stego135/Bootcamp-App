@@ -1,1 +1,10 @@
-<p>name: {{pokemon.name}}, count: {{pokemon.count}}</p>
+<div class="pokecon">
+    <div class="imgDiv">
+    
+        <img class="img-fluid" *ngIf="data" src={{data.sprites.other.home.front_shiny}}>
+    </div>
+    <div class="textDiv">
+        <p class="pokename">{{pokemon.name}}</p>
+        <p class="pokecount">Current count: {{pokemon.count}}</p>
+    </div>
+</div>

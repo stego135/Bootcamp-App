@@ -1,4 +1,6 @@
 <p>home works!</p>
-<div *ngFor="let pokemon of pokemon">
-    <app-pokemon-thumbnail [pokemon] = "pokemon"></app-pokemon-thumbnail>
+<div class="row">
+    <div class="col-md-4" *ngFor="let pokemon of pokemon">
+        <app-pokemon-thumbnail [pokemon] = "pokemon"></app-pokemon-thumbnail>
+    </div>
 </div>

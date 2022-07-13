@@ -1,0 +1,14 @@
+.pokecon {
+    background-color: lightblue;
+    border-radius: 25px;
+}
+p {
+    text-align: center;
+}
+.pokecon {
+    font-size: large;
+}
+
+img {
+    padding: 0px 70px;
+}
