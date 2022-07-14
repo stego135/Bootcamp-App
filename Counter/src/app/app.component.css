@@ -1,4 +1,4 @@
-.headerDiv {
+.app-header {
     background-color: #373737;
     padding-right: 0px;
 }
@@ -17,9 +17,12 @@ h1 {
     text-align: center;
 }
 
-img {
-    margin: 0px auto;
-}
-.imgDiv {
+.img-container {
     display: flex;
+}
+
+.app-header img {
+    width: 400px;
+    height: auto;
+    margin: 0px auto;
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import { Pokemon } from '../pokemon';
 
 @Component({
   selector: 'app-pokemon-thumbnail',
@@ -8,8 +9,9 @@ import {HttpClient} from '@angular/common/http';
 })
 export class PokemonThumbnailComponent implements OnInit {
 
-  @Input() pokemon:any
-  data:any
+  @Input()
+  pokemon: Pokemon = new Pokemon;
+  data!: any;
 
   constructor(private http:HttpClient) {
   }
