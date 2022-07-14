@@ -1,8 +1,25 @@
+.headerDiv {
+    background-color: #373737;
+    padding-right: 0px;
+}
+
 body {
-    background-color: lightgrey;
     font-family: OCR A Std, DejaVu Sans Mono, monospace;
 }
 
 p {
     color: gray;
+}
+
+h1 {
+    color: white;
+    padding-bottom: 40px;
+    text-align: center;
+}
+
+img {
+    margin: 0px auto;
+}
+.imgDiv {
+    display: flex;
 }

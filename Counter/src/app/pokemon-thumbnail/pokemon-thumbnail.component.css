@@ -1,14 +1,27 @@
 .pokecon {
-    background-color: lightblue;
     border-radius: 25px;
+    box-shadow: 5px 10px #888888;
 }
 p {
     text-align: center;
 }
-.pokecon {
+.pokename {
     font-size: large;
+    font-weight: bold;
 }
 
 img {
     padding: 0px 70px;
+}
+
+.imgDiv {
+    border-width: 0px 0px 2px 0px;
+    border-style: solid;
+    background-color: #F4F4F4;
+    border-radius: 25px 25px 0px 0px;
+}
+
+.textDiv {
+    background-color: #E6E6E6;
+    border-radius: 0px 0px 25px 25px;
 }
