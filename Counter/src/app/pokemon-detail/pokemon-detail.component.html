@@ -1,3 +1,10 @@
-<p>pokemon-detail works!</p>
-<p>{{name}}</p>
-<p>{{pokemon.count}}</p>
+<div class="row">
+    <div class="col-md-6 order-md-2 count">
+        <p>{{pokemon.count}}</p>
+        <input id="hero-name" [(ngModel)]="pokemon.count" placeholder="count"/>
+    </div>
+    <div class="col-md-6 order-md-1 image">
+        <h2>{{pokemon.name}}</h2>
+        <img class="center-block" *ngIf="data" src={{data.sprites.other.home.front_shiny}}>
+    </div>
+</div>
