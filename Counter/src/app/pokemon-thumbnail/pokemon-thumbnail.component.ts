@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { Pokemon } from '../pokemon';
+import { Data } from '@angular/router';
 
 @Component({
   selector: 'app-pokemon-thumbnail',
@@ -23,8 +24,8 @@ export class PokemonThumbnailComponent implements OnInit {
   getImageUrl() {
     var lowerName = new String(this.pokemon.name);
     lowerName  = lowerName[0].toLowerCase() + lowerName.slice(1);
-    this.http.get<any>("https://pokeapi.co/api/v2/pokemon/" + lowerName).subscribe(data=> {
-      this.image = data.sprites.other.home.front_shiny;
+    this.http.get<Data>("https://pokeapi.co/api/v2/pokemon/" + lowerName).subscribe(data=> {
+      this.image = data['sprites'].other.home.front_shiny;
     });
   }
   /*
