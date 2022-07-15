@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import { Pokemon } from '../pokemon';
+import { Pokemon } from '../shared/pokemon';
 
 @Component({
   selector: 'app-pokemon-thumbnail',

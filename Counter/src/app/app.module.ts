@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { PokemonDetailComponent } from './pokemon-detail/pokemon-detail.component';
 import { HomeComponent } from './home/home.component';
 import { PokemonThumbnailComponent } from './pokemon-thumbnail/pokemon-thumbnail.component';
-import { PokemonService } from './pokemon-service';
+import { PokemonService } from './shared/pokemon-service';
 
 @NgModule({
   declarations: [
