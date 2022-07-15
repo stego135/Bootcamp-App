@@ -1,7 +1,10 @@
 <div class="row">
     <div class="col-md-6 order-md-2 count">
-        <p>{{pokemon.count}}</p>
-        <input id="hero-name" [(ngModel)]="pokemon.count" placeholder="count"/>
+        <p>You have encountered {{pokemon.name}} a total of {{pokemon.count}} times! Add to the counter below:</p>
+        <input id="count-form" [(ngModel)]="pokemon.count" placeholder="count"/>
+        <button type="button" class="counter-add" (click)="add()">Add</button>
+        <p class="hall-of-fame-text">Finally encountered that shiny? Add it to the Hall of Fame!</p>
+        <button type="button" class="hall-of-fame-add">Hall of Fame</button>
     </div>
     <div class="col-md-6 order-md-1 image">
         <h2>{{pokemon.name}}</h2>

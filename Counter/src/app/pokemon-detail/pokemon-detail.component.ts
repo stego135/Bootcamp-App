@@ -40,5 +40,8 @@ export class PokemonDetailComponent implements OnInit {
       this.data = data;
     });
   }
+  add() {
+    this.pokemon.count+=1;
+  }
 
 }
