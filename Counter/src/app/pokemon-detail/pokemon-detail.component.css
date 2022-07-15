@@ -4,3 +4,39 @@
 .hall-of-fame-text {
     margin-top: 100px;
 }
+.pokemon-detail-container {
+    background-color: #FAFAFA;
+    border-radius: 25px;
+    box-shadow: 5px 10px #888888;
+    margin: 40px;
+}
+@media only screen and (min-width: 768px) {
+    .count {
+        border-width: 0px 0px 0px 2px;
+        border-style: solid;
+    }
+}
+.hall-of-fame-add {
+    height: 70px;
+    width: 70px;
+    background: linear-gradient(-180deg, #f00000 50%, #f0f0f0 50%);
+    border-radius: 50%;
+}
+.count,.image {
+    padding: 20px;
+}
+.counter-add:hover {
+    background-color: #f00000;
+    color: #f0f0f0;
+}
+.go-back {
+    background-color: #373737;
+    color: white;
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    border-radius: 10px;
+}
+.back-container {
+    margin-top: 70px;
+}

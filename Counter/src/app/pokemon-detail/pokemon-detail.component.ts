@@ -18,7 +18,8 @@ export class PokemonDetailComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, 
     private pokemonService: PokemonService,
-    private http:HttpClient) { }
+    private http:HttpClient,
+    private location: Location) { }
 
   ngOnInit(): void {
     this.getName();
@@ -42,6 +43,9 @@ export class PokemonDetailComponent implements OnInit {
   }
   add() {
     this.pokemon.count+=1;
+  }
+  goBack(): void {
+    this.location.back();
   }
 
 }
