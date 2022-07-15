@@ -14,11 +14,16 @@ export class HallOfFameComponent implements OnInit {
 
   ngOnInit(): void {
     this.getShiny();
-    this.shiny = this.hallOfFameService.sortAsc();
   }
   
   getShiny() {
     this.shiny = this.hallOfFameService.getShiny();
+  }
+  sortAsc() {
+    this.shiny = this.hallOfFameService.sortAsc();
+  }
+  sortDesc() {
+    this.shiny = this.hallOfFameService.sortDesc();
   }
 
 }

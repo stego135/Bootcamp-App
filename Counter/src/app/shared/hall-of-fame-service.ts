@@ -9,9 +9,9 @@ export class HallOfFameService {
         return SHINY;
     }
     sortAsc() {
-        return SHINY.sort((a, b) => a.count - b.count);
+        return SHINY.slice().sort((a, b) => a.count - b.count);
     }
     sortDesc() {
-        return SHINY.sort((a, b) => b.count - a.count);
+        return SHINY.slice().sort((a, b) => b.count - a.count);
     }
 }
