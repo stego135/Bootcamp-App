@@ -24,8 +24,9 @@ export class PokemonThumbnailComponent implements OnInit {
   getImageUrl() {
     var lowerName = new String(this.pokemon.name);
     lowerName  = lowerName[0].toLowerCase() + lowerName.slice(1);
-    this.http.get<Data>("https://pokeapi.co/api/v2/pokemon/" + lowerName).subscribe(data=> {
-      this.image = data['sprites'].other.home.front_shiny;
+    this.http.get<JSON>("https://pokeapi.co/api/v2/pokemon/" + lowerName).subscribe(data=> {
+      const obj = JSON.parse(JSON.stringify(data));
+      this.image = obj.sprites.other.home.front_shiny;
     });
   }
   /*
