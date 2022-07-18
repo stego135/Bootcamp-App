@@ -15,18 +15,13 @@ p {
 
 h1 {
     color: white;
-    padding-bottom: 40px;
-    /*text-align: center;*/
     margin-top: auto;
+    margin-bottom: auto;
     margin-left: 40px;
 }
-/*
-.img-container {
-    display: flex;
-}
-*/
+
 .app-header img {
-    width: 400px;
+    width: 300px;
     height: auto;
     margin: 0px auto;
 }
@@ -40,5 +35,6 @@ h1 {
     }
     h1 {
         text-align: center;
+        padding-bottom: 20px;
     }
 }
