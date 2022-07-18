@@ -1,3 +1,32 @@
 .pokemon-group {
     margin: 40px;
 }
+
+.sort-list {
+    display: flex;
+    justify-content: center;
+}
+
+.header {
+    text-align: center;
+}
+
+.add {
+    background-color: #373737;
+    color: white;
+    border-radius: 10px 0px 0px 10px;
+    width: 120px;
+}
+
+.asc {
+    background-color: #373737;
+    color: white;
+    width: 120px;
+}
+
+.desc {
+    background-color: #373737;
+    color: white;
+    border-radius: 0px 10px 10px 0px;
+    width: 120px;
+}

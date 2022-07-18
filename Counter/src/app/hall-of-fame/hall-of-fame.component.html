@@ -1,8 +1,10 @@
 <div class="header">
     <h2>Hall of Fame</h2>
-    <button (click)="getShiny()">When added</button>
-    <button (click)="sortAsc()">Asc</button>
-    <button (click)="sortDesc()">Desc</button>
+    <div class="sort-list">
+        <button class="add" (click)="getShiny()">When added</button>
+        <button class="asc" (click)="sortAsc()">Ascending</button>
+        <button class="desc" (click)="sortDesc()">Descending</button>
+    </div>
 </div>
 <div class="pokemon-group">
     <div class="row">

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import {HttpClient} from '@angular/common/http';
 import { Pokemon } from '../shared/pokemon';
 import { PokemonService } from '../shared/pokemon-service';
+import { HallOfFameService } from '../shared/hall-of-fame-service';
 
 @Component({
   selector: 'app-pokemon-detail',
@@ -19,7 +20,9 @@ export class PokemonDetailComponent implements OnInit {
   constructor(private route: ActivatedRoute, 
     private pokemonService: PokemonService,
     private http:HttpClient,
-    private location: Location) { }
+    private location: Location,
+    private hallOfFameService: HallOfFameService,
+    private router: Router ) { }
 
   ngOnInit(): void {
     this.getName();
@@ -46,6 +49,11 @@ export class PokemonDetailComponent implements OnInit {
   }
   goBack(): void {
     this.location.back();
+  }
+  addToHall() {
+    this.hallOfFameService.addPokemon(this.pokemon);
+    this.pokemonService.removePokemon(this.pokemon);
+    this.router.navigate(['/hall']);
   }
 
 }

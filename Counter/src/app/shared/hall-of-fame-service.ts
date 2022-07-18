@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-//import { Pokemon } from './pokemon';
+import { Pokemon } from './pokemon';
 import { SHINY } from './hall-of-fame-list';
 
 @Injectable()
@@ -13,5 +13,8 @@ export class HallOfFameService {
     }
     sortDesc() {
         return SHINY.slice().sort((a, b) => b.count - a.count);
+    }
+    addPokemon(pokemon: Pokemon) {
+        SHINY.push(pokemon);
     }
 }
