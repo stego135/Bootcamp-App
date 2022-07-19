@@ -1,7 +1,7 @@
 <div class="pokemon-container">
     <div class="img-container">
     
-        <img class="img-fluid" *ngIf="image" src={{image}}>
+        <img class="img-fluid" *ngIf="image$" [src]="(image$ | async)">
     </div>
     <div class="text-container">
         <p class="pokemon-name">{{pokemon.name}}</p>

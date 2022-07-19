@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Pokemon } from '../pokemon';
-import { Data } from '@angular/router';
+import { PokemonService } from '../pokemon-service';
 
 @Component({
   selector: 'app-pokemon-thumbnail',
@@ -12,9 +12,10 @@ export class PokemonThumbnailComponent implements OnInit {
 
   @Input()
   pokemon: Pokemon = new Pokemon;
-  image!: String;
+  image$!: Observable<string>;
 
-  constructor(private http:HttpClient) {
+  constructor(
+    private pokemonService: PokemonService) {
   }
 
   ngOnInit(): void {
@@ -22,12 +23,8 @@ export class PokemonThumbnailComponent implements OnInit {
   }
 
   getImageUrl() {
-    var lowerName = new String(this.pokemon.name);
-    lowerName  = lowerName[0].toLowerCase() + lowerName.slice(1);
-    this.http.get<JSON>("https://pokeapi.co/api/v2/pokemon/" + lowerName).subscribe(data=> {
-      const obj = JSON.parse(JSON.stringify(data));
-      this.image = obj.sprites.other.home.front_shiny;
-    });
+    this.image$ = this.pokemonService.getImage(this.pokemon);
+    console.log(this.image$);
   }
   /*
 special cases: nidoran, farfetch'd, mr mime, ho oh, deoxys, wormadam, 
