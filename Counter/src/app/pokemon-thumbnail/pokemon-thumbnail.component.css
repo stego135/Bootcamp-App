@@ -1,0 +1,27 @@
+.pokemon-container {
+    border-radius: 25px;
+    box-shadow: 5px 10px #888888;
+}
+p {
+    text-align: center;
+}
+.pokemon-name {
+    font-size: large;
+    font-weight: bold;
+}
+
+.img-container img {
+    padding: 0px 70px;
+}
+
+.img-container {
+    border-width: 0px 0px 2px 0px;
+    border-style: solid;
+    background-color: #F4F4F4;
+    border-radius: 25px 25px 0px 0px;
+}
+
+.text-container {
+    background-color: #E6E6E6;
+    border-radius: 0px 0px 25px 25px;
+}
