@@ -15,7 +15,7 @@ export class PokemonDetailComponent implements OnInit {
   name!: string
   pokemon: Pokemon = new Pokemon;
   pokemonList!: Observable<Pokemon[]>
-  data: any
+  image$!: Observable<string>;
 
   constructor(private route: ActivatedRoute, 
     private pokemonService: PokemonService,
@@ -35,11 +35,7 @@ export class PokemonDetailComponent implements OnInit {
     this.pokemon = this.pokemonService.getOnePokemon(this.name);
   }
   getImageUrl() {
-    var lowerName = new String(this.pokemon.name);
-    lowerName  = lowerName[0].toLowerCase() + lowerName.slice(1);
-    this.http.get("https://pokeapi.co/api/v2/pokemon/" + lowerName).subscribe(data=> {
-      this.data = data;
-    });
+    this.image$ = this.pokemonService.getImage(this.pokemon);
   }
   add() {
     this.pokemon.count+=1;
