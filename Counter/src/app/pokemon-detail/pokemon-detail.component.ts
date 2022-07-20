@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 import {HttpClient} from '@angular/common/http';
 import { Pokemon } from '../pokemon';
 import { PokemonService } from '../pokemon-service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-pokemon-detail',
@@ -11,9 +12,9 @@ import { PokemonService } from '../pokemon-service';
   styleUrls: ['./pokemon-detail.component.css']
 })
 export class PokemonDetailComponent implements OnInit {
-  name!: String
+  name!: string
   pokemon: Pokemon = new Pokemon;
-  pokemonList!: Pokemon[]
+  pokemonList!: Observable<Pokemon[]>
   data: any
 
   constructor(private route: ActivatedRoute, 
@@ -31,8 +32,7 @@ export class PokemonDetailComponent implements OnInit {
   }
   getPokemon() {
     this.pokemonList = this.pokemonService.getPokemon();
-    let filteredList = this.pokemonList.find(pokemon => pokemon.name == this.name);
-    if (filteredList) this.pokemon = filteredList;
+    this.pokemon = this.pokemonService.getOnePokemon(this.name);
   }
   getImageUrl() {
     var lowerName = new String(this.pokemon.name);
