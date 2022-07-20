@@ -24,7 +24,6 @@ export class PokemonThumbnailComponent implements OnInit {
 
   getImageUrl() {
     this.image$ = this.pokemonService.getImage(this.pokemon);
-    console.log(this.image$);
   }
   /*
 special cases: nidoran, farfetch'd, mr mime, ho oh, deoxys, wormadam, 
