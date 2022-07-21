@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, from } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Pokemon } from './pokemon';
 import { POKEMON } from './pokemon-list';
 import { ImageData } from './image';

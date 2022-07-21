@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import {HttpClient} from '@angular/common/http';
 import { Pokemon } from '../shared/pokemon';
 import { PokemonService } from '../shared/pokemon-service';
-import { Observable, filter } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HallOfFameService } from '../shared/hall-of-fame-service';
 
 @Component({
@@ -20,7 +19,6 @@ export class PokemonDetailComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, 
     private pokemonService: PokemonService,
-    private http:HttpClient,
     private location: Location,
     private hallOfFameService: HallOfFameService,
     private router: Router ) { }
