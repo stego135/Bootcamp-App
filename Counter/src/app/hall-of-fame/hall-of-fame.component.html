@@ -1,9 +1,12 @@
 <div class="header">
     <h2>Hall of Fame</h2>
     <div class="sort-list">
-        <button class="add" (click)="getShiny()">When added</button>
-        <button class="asc" (click)="sortAsc()">Ascending</button>
-        <button class="desc" (click)="sortDesc()">Descending</button>
+        <button class="add" (click)="getShiny()" 
+        [ngStyle]="{'background-color': isTime ? '#555555' : '#373737'}">When added</button>
+        <button class="asc" (click)="sortAsc()"
+        [ngStyle]="{'background-color': isAsc ? '#555555' : '#373737'}">Ascending</button>
+        <button class="desc" (click)="sortDesc()"
+        [ngStyle]="{'background-color': isDesc ? '#555555' : '#373737'}">Descending</button>
     </div>
 </div>
 <div class="pokemon-group">

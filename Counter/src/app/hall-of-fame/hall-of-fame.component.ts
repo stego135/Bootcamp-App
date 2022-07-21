@@ -9,6 +9,9 @@ import { Pokemon } from '../shared/pokemon';
 })
 export class HallOfFameComponent implements OnInit {
   shiny!: Pokemon[]
+  isTime: Boolean = true;
+  isAsc: Boolean = false;
+  isDesc: Boolean = false;
 
   constructor(private hallOfFameService: HallOfFameService) { }
 
@@ -18,12 +21,21 @@ export class HallOfFameComponent implements OnInit {
   
   getShiny() {
     this.shiny = this.hallOfFameService.getShiny();
+    this.isTime = true;
+    this.isAsc = false;
+    this.isDesc = false;
   }
   sortAsc() {
     this.shiny = this.hallOfFameService.sortAsc();
+    this.isTime = false;
+    this.isAsc = true;
+    this.isDesc = false;
   }
   sortDesc() {
     this.shiny = this.hallOfFameService.sortDesc();
+    this.isTime = false;
+    this.isAsc = false;
+    this.isDesc = true;
   }
 
 }
