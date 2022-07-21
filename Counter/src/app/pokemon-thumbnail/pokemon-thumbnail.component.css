@@ -25,3 +25,16 @@ p {
     background-color: #E6E6E6;
     border-radius: 0px 0px 25px 25px;
 }
+
+.pokemon-container:hover {
+    box-shadow: 5px 10px #555555;
+}
+
+.pokemon-container:hover .img-container {
+    background-color: #FAFAFA;
+}
+
+.pokemon-container:hover .text-container {
+    background-color: #4A4A4A;
+    color: white;
+}

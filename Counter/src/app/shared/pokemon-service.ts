@@ -10,9 +10,14 @@ import { ImageData } from './image';
 @Injectable()
 export class PokemonService {
     constructor(private http:HttpClient) { }
-
-    getPokemon() {
-        return POKEMON;
+    
+    getPokemon(): Observable<Pokemon[]> {
+        return of(POKEMON);
+    }
+    getOnePokemon(name: string): Pokemon {
+        let filteredList = POKEMON.find(pokemon => pokemon.name == name);
+        if (filteredList) return filteredList;
+        return new Pokemon;
     }
     getImage(pokemon: Pokemon): Observable<string> {
         var lowerName = new String(pokemon.name);
@@ -22,5 +27,9 @@ export class PokemonService {
                 return data.sprites.other.home.front_shiny;
             })
         );
+    }
+    removePokemon(pokemon: Pokemon) {
+        const index = POKEMON.indexOf(pokemon);
+        POKEMON.splice(index, 1);
     }
 }

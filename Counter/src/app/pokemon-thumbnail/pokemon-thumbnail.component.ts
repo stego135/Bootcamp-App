@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Pokemon } from '../pokemon';
-import { PokemonService } from '../pokemon-service';
+import { Pokemon } from '../shared/pokemon';
+import { PokemonService } from '../shared/pokemon-service';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-pokemon-thumbnail',
