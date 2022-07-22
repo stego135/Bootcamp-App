@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { HallOfFameService } from '../shared/hall-of-fame-service';
 import { Pokemon } from '../shared/pokemon';
 
@@ -8,7 +9,7 @@ import { Pokemon } from '../shared/pokemon';
   styleUrls: ['./hall-of-fame.component.css']
 })
 export class HallOfFameComponent implements OnInit {
-  shiny!: Pokemon[]
+  shiny!: Observable<Pokemon[]>;
   isTime: Boolean = true;
   isAsc: Boolean = false;
   isDesc: Boolean = false;

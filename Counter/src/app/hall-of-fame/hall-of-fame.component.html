@@ -11,7 +11,7 @@
 </div>
 <div class="pokemon-group">
     <div class="row">
-        <div class="col-md-3" *ngFor="let pokemon of shiny">
+        <div class="col-md-3" *ngFor="let pokemon of shiny | async">
             <app-pokemon-thumbnail [pokemon] = "pokemon"></app-pokemon-thumbnail>
         </div>
     </div>
