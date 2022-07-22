@@ -14,7 +14,6 @@ import { HallOfFameService } from '../shared/hall-of-fame-service';
 export class PokemonDetailComponent implements OnInit {
   name!: string
   pokemon: Pokemon = new Pokemon;
-  pokemonList!: Observable<Pokemon[]>
   image$!: Observable<string>;
 
   constructor(private route: ActivatedRoute, 
@@ -32,7 +31,6 @@ export class PokemonDetailComponent implements OnInit {
     this.name = String(this.route.snapshot.paramMap.get('name'));
   }
   getPokemon() {
-    this.pokemonList = this.pokemonService.getPokemon();
     this.pokemon = this.pokemonService.getOnePokemon(this.name);
   }
   getImageUrl() {
