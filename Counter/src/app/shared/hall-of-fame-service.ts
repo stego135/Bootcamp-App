@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Pokemon } from './pokemon';
 import { SHINY } from './hall-of-fame-list';
-import { of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 
 @Injectable()
 export class HallOfFameService {
@@ -15,7 +15,12 @@ export class HallOfFameService {
     sortDesc() {
         return of(SHINY.slice().sort((a, b) => b.count - a.count));
     }
-    addPokemon(pokemon: Pokemon) {
-        SHINY.push(pokemon);
+    addPokemon(pokemon: Pokemon): Observable<boolean> {
+       const oldLength = SHINY.length;
+       return of(SHINY.push(pokemon)).pipe(
+        map((length: Number) => {
+            return length > oldLength;
+        }
+       ));
     }
 }

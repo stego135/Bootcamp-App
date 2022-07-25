@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of, map } from 'rxjs';
 import { Pokemon } from './pokemon';
 import { POKEMON } from './pokemon-list';
 import { ImageData } from './image';
@@ -27,8 +26,12 @@ export class PokemonService {
             })
         );
     }
-    removePokemon(pokemon: Pokemon) {
+    removePokemon(pokemon: Pokemon): Observable<boolean> {
         const index = POKEMON.indexOf(pokemon);
-        POKEMON.splice(index, 1);
+        return of(POKEMON.splice(index, 1)).pipe(
+            map((deleted: Pokemon[]) => {
+                return deleted.length < 0;
+            })
+        )
     }
 }
