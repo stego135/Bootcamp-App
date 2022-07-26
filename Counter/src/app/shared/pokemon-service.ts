@@ -34,4 +34,7 @@ export class PokemonService {
             })
         )
     }
+    filterPokemon(searchTerm: string) {
+        return POKEMON.filter(pokemon => pokemon.name.includes(searchTerm));
+    }
 }

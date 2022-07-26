@@ -1,6 +1,8 @@
 .app-header {
     background-color: #373737;
     padding-right: 0px;
+    display: flex;
+    justify-content: center;
 }
 
 body {
@@ -13,16 +15,26 @@ p {
 
 h1 {
     color: white;
-    padding-bottom: 40px;
-    text-align: center;
-}
-
-.img-container {
-    display: flex;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 40px;
 }
 
 .app-header img {
-    width: 400px;
+    width: 300px;
     height: auto;
     margin: 0px auto;
+}
+
+@media only screen and (max-width: 768px) {
+    .app-header {
+        display: block;
+    }
+    .img-container {
+        display: flex;
+    }
+    h1 {
+        text-align: center;
+        padding-bottom: 20px;
+    }
 }
