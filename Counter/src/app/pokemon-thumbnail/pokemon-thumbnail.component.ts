@@ -28,7 +28,7 @@ export class PokemonThumbnailComponent implements OnInit {
   /*
 special cases: nidoran, farfetch'd, mr mime, ho oh, deoxys, wormadam, 
 mime jr, porygon z, giratina, shaymin, basculin, darmanitan, meloetta, 
-genies, keldeo, aegislash, meowstic, pumpkaoo, gourgeist, zygarde, 
+genies, keldeo, flabebe, aegislash, meowstic, pumpkaoo, gourgeist, zygarde, 
 oricorio, lycanroc, wishiwashi, type null, minior, mimikyu, kommo-o, 
 tapus, toxtricity, mr rime, sirfetch'd, eiscue, indeedee, morpeko, 
 urshifu, basculegion

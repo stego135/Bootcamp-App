@@ -12,6 +12,7 @@ import { PokemonService } from './shared/pokemon-service';
 import { HallOfFameComponent } from './hall-of-fame/hall-of-fame.component';
 import { HallOfFameService } from './shared/hall-of-fame-service';
 import { NavbarComponent } from './navbar/navbar.component';
+import { NewPokemonComponent } from './new-pokemon/new-pokemon.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { NavbarComponent } from './navbar/navbar.component';
     HomeComponent,
     PokemonThumbnailComponent,
     HallOfFameComponent,
-    NavbarComponent
+    NavbarComponent,
+    NewPokemonComponent
   ],
   imports: [
     BrowserModule,

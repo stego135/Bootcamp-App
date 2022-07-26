@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, map, BehaviorSubject, switchMap } from 'rxjs';
+import { Observable, of, map, BehaviorSubject, switchMap, catchError } from 'rxjs';
 import { Pokemon } from './pokemon';
 import { POKEMON } from './pokemon-list';
 import { ImageData } from './image';
@@ -41,6 +41,7 @@ export class PokemonService {
     getImage(pokemon: Pokemon): Observable<string> {
         var lowerName = new String(pokemon.name);
         lowerName  = lowerName[0].toLowerCase() + lowerName.slice(1);
+        lowerName = this.cleanName(lowerName);
         return this.http.get<ImageData>("https://pokeapi.co/api/v2/pokemon/" + lowerName).pipe(
             map((data: ImageData) => {
                 return data.sprites.other.home.front_shiny;
@@ -68,4 +69,119 @@ export class PokemonService {
     getSearchTerm(): Observable<string> {
         return this.filter;
     }
+    addPokemon(pokemon: Pokemon): Observable<boolean> {
+        const oldLength = POKEMON.length;
+        pokemon.id = oldLength + 1;
+        return of(POKEMON.push(pokemon)).pipe(
+            map((length: Number) => {
+                return length > oldLength;
+            }
+        ));
+    }
+    cleanName(name: String): String {
+        name = name[0].toLowerCase() + name.slice(1);
+        switch(name) {
+            case "nidoran":
+                return name + "-m"
+            case "meowstic":
+            case "indeedee":
+                return name + "-male";
+            case "farfetch'd":
+                return "farfetchd";
+            case "mr. Mime":
+                return "mr-mime";
+            case "ho-Oh":
+                return "ho-oh";
+            case "deoxys":
+                return name + "-normal";
+            case "wormadam":
+                return name + "-plant";
+            case "mime Jr.":
+                return "mime-jr";
+            case "porygon-Z":
+                return "porygon-z";
+            case "giratina":
+                return name + "-altered";
+            case "shaymin":
+                return name + "-land";
+            case "basculin":
+                return name + "-red-striped";
+            case "darmanitan":
+                return name + "-standard";
+            case "meloetta":
+                return name + "-aria";
+            case "thundurus":
+            case "tornadus":
+            case "landorus":
+                return name + "-incarnate";
+            case "keldeo":
+                return name + "-ordinary";
+            case "flabébé":
+                return "flabebe";
+            case "aegislash":
+                return name + "-shield"
+            case "pumpkaboo":
+            case "gourgeist":
+                return name + "-average";
+            case "zygarde":
+                return name + "-50";
+            case "oricorico":
+                return name + "-baile";
+            case "lycanroc":
+                return name + "-midday";
+            case "wishiwashi":
+                return name + "-solo";
+            case "type: Null":
+            case "type: null":
+                return "type-null";
+            case "minior":
+                return name + "-red-meteor";
+            case "mimikyu":
+                return name + "-disguised";
+            case "tapu Lele":
+            case "tapu lele":
+                return "tapu-lele";
+            case "tapu Koko":
+            case "tapu koko":
+                return "tapu-koko";
+            case "tapu Bulu":
+            case "tapu bulu":
+                return "tapu-bulu";
+            case "tapu Fini":
+            case "tapu fini":
+                return "tapu-fini";
+            case "toxtricity":
+                return name + "-amped";
+            case "mr. Rime":
+                return "mr-rime";
+            case "sirfetch'd":
+                return "sirfetchd";
+            case "eiscue":
+                return name + "-ice";
+            case "morpeko":
+                return name + "-full-belly";
+            case "ursifu":
+                return name + "-single-strike";
+        }
+        return name;
+    }
+
+    checkNewPokemon(pokemon: Pokemon): Observable<string> {
+        var search = POKEMON.find(searchPokemon => searchPokemon.name == pokemon.name);
+        if (search != undefined) return of("duplicate");
+        var name = this.cleanName(pokemon.name);
+        return this.http.get("https://pokeapi.co/api/v2/pokemon/" + name).pipe(
+            map(_ => {return "add";}),
+            catchError(_ => {return of("not");})
+        )
+    }
 }
+/*
+special cases: nidoran, farfetch'd, mr mime, ho oh, deoxys, wormadam, 
+mime jr, porygon z, giratina, shaymin, basculin, darmanitan, meloetta, 
+genies, keldeo, flabebe, aegislash, meowstic, pumpkaoo, gourgeist, zygarde, 
+oricorio, lycanroc, wishiwashi, type null, minior, mimikyu, kommo-o, 
+tapus, toxtricity, mr rime, sirfetch'd, eiscue, indeedee, morpeko, 
+urshifu, basculegion
+
+maybe add alola and galar option to form? */
