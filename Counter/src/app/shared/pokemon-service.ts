@@ -34,4 +34,7 @@ export class PokemonService {
             })
         )
     }
+    filterPokemon(searchTerm: string): Observable<Pokemon[]> {
+        return of(POKEMON.filter(pokemon => pokemon.name.includes(searchTerm)));
+    }
 }
