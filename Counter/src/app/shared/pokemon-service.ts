@@ -30,7 +30,7 @@ export class PokemonService {
         const index = POKEMON.indexOf(pokemon);
         return of(POKEMON.splice(index, 1)).pipe(
             map((deleted: Pokemon[]) => {
-                return deleted.length < 0;
+                return deleted.length > 0;
             })
         )
     }

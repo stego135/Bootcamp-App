@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Pokemon } from '../shared/pokemon';
 import { PokemonService } from '../shared/pokemon-service';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable, map, take } from 'rxjs';
 import { HallOfFameService } from '../shared/hall-of-fame-service';
 
 @Component({
@@ -43,9 +43,13 @@ export class PokemonDetailComponent implements OnInit {
     this.location.back();
   }
   addToHall() {
-    this.hallOfFameService.addPokemon(this.pokemon);
-    this.pokemonService.removePokemon(this.pokemon);
-    this.router.navigate(['/hall']);
+    forkJoin([this.hallOfFameService.addPokemon(this.pokemon), this.pokemonService.removePokemon(this.pokemon)]).pipe(
+      take(1),
+      map(([added, deleted]: [boolean, boolean]) => {
+        if (added && deleted) this.router.navigate(['/hall']);
+      }
+      )
+    ).subscribe(console.log);
   }
 
 }
