@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PokemonDetailComponent } from './pokemon-detail/pokemon-detail.component';
-//import {AppComponent} from './app.component'
 import { HomeComponent } from './home/home.component';
 import { HallOfFameComponent } from './hall-of-fame/hall-of-fame.component';
 

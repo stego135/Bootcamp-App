@@ -49,7 +49,7 @@ export class PokemonDetailComponent implements OnInit {
         if (added && deleted) this.router.navigate(['/hall']);
       }
       )
-    ).subscribe(console.log);
+    ).subscribe();
   }
 
 }
