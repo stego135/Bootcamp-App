@@ -12,7 +12,7 @@ import { HallOfFameService } from '../shared/hall-of-fame-service';
   styleUrls: ['./pokemon-detail.component.css']
 })
 export class PokemonDetailComponent implements OnInit {
-  name!: string
+  id!: number
   pokemon: Pokemon = new Pokemon;
   image$!: Observable<string>;
 
@@ -28,10 +28,10 @@ export class PokemonDetailComponent implements OnInit {
     this.getImageUrl();
   }
   getName(): void {
-    this.name = String(this.route.snapshot.paramMap.get('name'));
+    this.id = Number(this.route.snapshot.paramMap.get('id'));
   }
   getPokemon() {
-    this.pokemon = this.pokemonService.getOnePokemon(this.name);
+    this.pokemon = this.pokemonService.getOnePokemon(this.id);
   }
   getImageUrl() {
     this.image$ = this.pokemonService.getImage(this.pokemon);

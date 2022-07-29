@@ -12,8 +12,8 @@ export class PokemonService {
     getPokemon(): Observable<Pokemon[]> {
         return of(POKEMON);
     }
-    getOnePokemon(name: string): Pokemon {
-        let filteredList = POKEMON.find(pokemon => pokemon.name == name);
+    getOnePokemon(id: number): Pokemon {
+        let filteredList = POKEMON.find(pokemon => pokemon.id == id);
         if (filteredList) return filteredList;
         return new Pokemon;
     }

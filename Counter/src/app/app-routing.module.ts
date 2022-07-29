@@ -7,7 +7,7 @@ import { HallOfFameComponent } from './hall-of-fame/hall-of-fame.component';
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'detail/:name', component: PokemonDetailComponent },
+  { path: 'detail/:id', component: PokemonDetailComponent },
   { path: 'hall', component: HallOfFameComponent }
 ];
 

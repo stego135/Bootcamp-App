@@ -17,6 +17,7 @@ export class HallOfFameService {
     }
     addPokemon(pokemon: Pokemon): Observable<boolean> {
        const oldLength = SHINY.length;
+       pokemon.id = oldLength + 1;
        return of(SHINY.push(pokemon)).pipe(
         map((length: Number) => {
             return length > oldLength;
