@@ -10,10 +10,13 @@ export class HallOfFameService {
         return of(SHINY);
     }
     sortAsc() {
-        return of(SHINY.slice().sort((a, b) => a.count - b.count));
+        return of(SHINY.sort((a, b) => a.count - b.count));
     }
     sortDesc() {
-        return of(SHINY.slice().sort((a, b) => b.count - a.count));
+        return of(SHINY.sort((a, b) => b.count - a.count));
+    }
+    sortOrder() {
+        return of(SHINY.sort((a, b) => a.id - b.id));
     }
     addPokemon(pokemon: Pokemon): Observable<boolean> {
        const oldLength = SHINY.length;

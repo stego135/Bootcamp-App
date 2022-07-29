@@ -26,6 +26,12 @@ export class HallOfFameComponent implements OnInit {
     this.isAsc = false;
     this.isDesc = false;
   }
+  sortOrder() {
+    this.shiny = this.hallOfFameService.sortOrder();
+    this.isTime = true;
+    this.isAsc = false;
+    this.isDesc = false;
+  }
   sortAsc() {
     this.shiny = this.hallOfFameService.sortAsc();
     this.isTime = false;
