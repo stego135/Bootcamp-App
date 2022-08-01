@@ -20,13 +20,13 @@ export class HallOfFameService {
         )
     }
 
-    getShiny() {
+    getShiny(): Observable<Pokemon[]> {
         return this.view;
     }
     changePhrase(sortPhrase: string) {
         this.sortedStream.next(sortPhrase);
     }
-    sortShiny(shiny: Pokemon[], sort: string) {
+    sortShiny(shiny: Pokemon[], sort: string): Pokemon[] {
         switch(sort) {
             case "time" :
                 return shiny.sort((a, b) => a.id - b.id);
