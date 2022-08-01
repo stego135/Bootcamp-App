@@ -1,6 +1,6 @@
 <div class="pokemon-group">
     <div class="row">
-        <div class="col-md-4" *ngFor="let pokemon of pokemon | async" routerLink="/detail/{{pokemon.name}}">
+        <div class="col-md-4" *ngFor="let pokemon of pokemon | async" routerLink="/detail/{{pokemon.id}}">
             <app-pokemon-thumbnail [pokemon] = "pokemon"></app-pokemon-thumbnail>
         </div>
     </div>

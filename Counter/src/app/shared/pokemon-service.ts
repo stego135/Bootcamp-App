@@ -1,8 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, from } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-
+import { Observable, of, map } from 'rxjs';
 import { Pokemon } from './pokemon';
 import { POKEMON } from './pokemon-list';
 import { ImageData } from './image';
@@ -14,8 +12,8 @@ export class PokemonService {
     getPokemon(): Observable<Pokemon[]> {
         return of(POKEMON);
     }
-    getOnePokemon(name: string): Pokemon {
-        let filteredList = POKEMON.find(pokemon => pokemon.name == name);
+    getOnePokemon(id: number): Pokemon {
+        let filteredList = POKEMON.find(pokemon => pokemon.id == id);
         if (filteredList) return filteredList;
         return new Pokemon;
     }
@@ -27,5 +25,13 @@ export class PokemonService {
                 return data.sprites.other.home.front_shiny;
             })
         );
+    }
+    removePokemon(pokemon: Pokemon): Observable<boolean> {
+        const index = POKEMON.indexOf(pokemon);
+        return of(POKEMON.splice(index, 1)).pipe(
+            map((deleted: Pokemon[]) => {
+                return deleted.length > 0;
+            })
+        )
     }
 }

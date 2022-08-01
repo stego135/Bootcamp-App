@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import {HttpClient} from '@angular/common/http';
-import { Pokemon } from '../pokemon';
-import { PokemonService } from '../pokemon-service';
-import { Observable } from 'rxjs';
+import { Pokemon } from '../shared/pokemon';
+import { PokemonService } from '../shared/pokemon-service';
+import { forkJoin, Observable, map, take } from 'rxjs';
+import { HallOfFameService } from '../shared/hall-of-fame-service';
 
 @Component({
   selector: 'app-pokemon-detail',
@@ -12,15 +12,15 @@ import { Observable } from 'rxjs';
   styleUrls: ['./pokemon-detail.component.css']
 })
 export class PokemonDetailComponent implements OnInit {
-  name!: string
+  id!: number
   pokemon: Pokemon = new Pokemon;
-  pokemonList!: Observable<Pokemon[]>
   image$!: Observable<string>;
 
   constructor(private route: ActivatedRoute, 
     private pokemonService: PokemonService,
-    private http:HttpClient,
-    private location: Location) { }
+    private location: Location,
+    private hallOfFameService: HallOfFameService,
+    private router: Router ) { }
 
   ngOnInit(): void {
     this.getName();
@@ -28,11 +28,10 @@ export class PokemonDetailComponent implements OnInit {
     this.getImageUrl();
   }
   getName(): void {
-    this.name = String(this.route.snapshot.paramMap.get('name'));
+    this.id = Number(this.route.snapshot.paramMap.get('id'));
   }
   getPokemon() {
-    this.pokemonList = this.pokemonService.getPokemon();
-    this.pokemon = this.pokemonService.getOnePokemon(this.name);
+    this.pokemon = this.pokemonService.getOnePokemon(this.id);
   }
   getImageUrl() {
     this.image$ = this.pokemonService.getImage(this.pokemon);
@@ -42,6 +41,15 @@ export class PokemonDetailComponent implements OnInit {
   }
   goBack(): void {
     this.location.back();
+  }
+  addToHall() {
+    forkJoin([this.hallOfFameService.addPokemon(this.pokemon), this.pokemonService.removePokemon(this.pokemon)]).pipe(
+      take(1),
+      map(([added, deleted]: [boolean, boolean]) => {
+        if (added && deleted) this.router.navigate(['/hall']);
+      }
+      )
+    ).subscribe();
   }
 
 }

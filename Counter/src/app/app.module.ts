@@ -8,14 +8,17 @@ import { AppComponent } from './app.component';
 import { PokemonDetailComponent } from './pokemon-detail/pokemon-detail.component';
 import { HomeComponent } from './home/home.component';
 import { PokemonThumbnailComponent } from './pokemon-thumbnail/pokemon-thumbnail.component';
-import { PokemonService } from './pokemon-service';
+import { PokemonService } from './shared/pokemon-service';
+import { HallOfFameComponent } from './hall-of-fame/hall-of-fame.component';
+import { HallOfFameService } from './shared/hall-of-fame-service';
 
 @NgModule({
   declarations: [
     AppComponent,
     PokemonDetailComponent,
     HomeComponent,
-    PokemonThumbnailComponent
+    PokemonThumbnailComponent,
+    HallOfFameComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +26,7 @@ import { PokemonService } from './pokemon-service';
     HttpClientModule,
     FormsModule
   ],
-  providers: [PokemonService],
+  providers: [PokemonService, HallOfFameService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
