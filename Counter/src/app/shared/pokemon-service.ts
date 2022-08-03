@@ -85,10 +85,12 @@ export class PokemonService {
                 return name + "-m"
             case "meowstic":
             case "indeedee":
+            case "basculegion":
                 return name + "-male";
             case "farfetch'd":
                 return "farfetchd";
             case "mr. Mime":
+            case "mr. mime":
                 return "mr-mime";
             case "ho-Oh":
                 return "ho-oh";
@@ -97,6 +99,7 @@ export class PokemonService {
             case "wormadam":
                 return name + "-plant";
             case "mime Jr.":
+            case "mime jr.":
                 return "mime-jr";
             case "porygon-Z":
                 return "porygon-z";
@@ -107,6 +110,7 @@ export class PokemonService {
             case "basculin":
                 return name + "-red-striped";
             case "darmanitan":
+            case "darmanitan-galar":
                 return name + "-standard";
             case "meloetta":
                 return name + "-aria";
@@ -176,12 +180,3 @@ export class PokemonService {
         )
     }
 }
-/*
-special cases: nidoran, farfetch'd, mr mime, ho oh, deoxys, wormadam, 
-mime jr, porygon z, giratina, shaymin, basculin, darmanitan, meloetta, 
-genies, keldeo, flabebe, aegislash, meowstic, pumpkaoo, gourgeist, zygarde, 
-oricorio, lycanroc, wishiwashi, type null, minior, mimikyu, kommo-o, 
-tapus, toxtricity, mr rime, sirfetch'd, eiscue, indeedee, morpeko, 
-urshifu, basculegion
-
-maybe add alola and galar option to form? */
