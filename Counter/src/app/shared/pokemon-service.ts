@@ -8,6 +8,7 @@ import { ImageData } from './image';
 @Injectable()
 export class PokemonService {
     private filterStream: BehaviorSubject<string> = new BehaviorSubject("");
+    public filter: Observable<string>;
     public pokemon: Observable<Pokemon[]>;
     private filteredStream: BehaviorSubject<boolean> = new BehaviorSubject(false);
     public filtered: Observable<boolean>;
@@ -26,6 +27,7 @@ export class PokemonService {
             })
         )
         this.filtered = this.filteredStream.asObservable();
+        this.filter = this.filterStream.asObservable();
     }
     
     getPokemon(): Observable<Pokemon[]> {
@@ -62,5 +64,8 @@ export class PokemonService {
     }
     isFiltered(): Observable<boolean> {
         return this.filtered;
+    }
+    getSearchTerm(): Observable<string> {
+        return this.filter;
     }
 }

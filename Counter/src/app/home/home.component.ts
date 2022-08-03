@@ -11,10 +11,11 @@ import { Observable } from 'rxjs';
 export class HomeComponent implements OnInit {
   pokemon!: Observable<Pokemon[]>;
   isFiltered$: Observable<boolean>;
-
+  filterTerm$: Observable<string>;
   
   constructor(private pokemonService: PokemonService) { 
     this.isFiltered$ = this.pokemonService.isFiltered();
+    this.filterTerm$ = this.pokemonService.getSearchTerm();
   }
 
   getPokemon() {
