@@ -1,7 +1,7 @@
 <div class="header">
     <h2>Current Shiny Hunts</h2>
     <p *ngIf="isFiltered$ | async">Searching for: {{filterTerm$ | async}}</p>
-    <button class="btn btn-primary" routerLink="/new">New Pokémon</button>
+    <button class="btn btn-primary" *ngIf="!(isFiltered$ | async)" routerLink="/new">New Pokémon</button>
 </div>
 <div class="pokemon-group">
     <div class="row">
