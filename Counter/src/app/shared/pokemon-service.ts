@@ -54,7 +54,8 @@ export class PokemonService {
         )
     }
     filterPokemon(searchTerm: string): Observable<Pokemon[]> {
-        return of(POKEMON.filter(pokemon => pokemon.name.includes(searchTerm)));
+        searchTerm = searchTerm.toLowerCase();
+        return of(POKEMON.filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm)));
     }
     changeTerm(searchTerm: string) {
         this.filterStream.next(searchTerm);
