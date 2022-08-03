@@ -1,3 +1,6 @@
 .pokemon-group {
     margin: 40px;
 }
+.clear {
+    float: right;
+}

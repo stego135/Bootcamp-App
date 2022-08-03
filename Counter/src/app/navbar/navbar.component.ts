@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { PokemonService } from '../shared/pokemon-service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,13 +10,15 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
   searchTerm: string = "";
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+    private pokemonService: PokemonService) { }
 
   ngOnInit(): void {
   }
 
   search() {
-    this.router.navigate(['/home', {search: this.searchTerm}]);
+    this.router.navigate(["/home"]);
+    this.pokemonService.changeTerm(this.searchTerm);
     this.searchTerm = "";
   }
 
