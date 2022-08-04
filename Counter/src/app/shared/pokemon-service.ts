@@ -35,9 +35,7 @@ export class PokemonService {
     }
     
     getPokemon(): Observable<Pokemon[]> {
-        return this.http.get<Pokemon[]>(this.pokeUrl).pipe(
-            tap(pokemon => console.log(pokemon))
-        );
+        return this.http.get<Pokemon[]>(this.pokeUrl);
     }
     getOnePokemon(id: number): Pokemon {
         let filteredList = POKEMON.find(pokemon => pokemon.id == id);
@@ -45,7 +43,6 @@ export class PokemonService {
         return new Pokemon;
     }
     getImage(pokemon: Pokemon): Observable<string> {
-        console.log(pokemon.name);
         var lowerName = new String(pokemon.name);
         lowerName  = lowerName[0].toLowerCase() + lowerName.slice(1);
         lowerName = this.cleanName(lowerName);
@@ -76,14 +73,8 @@ export class PokemonService {
     getSearchTerm(): Observable<string> {
         return this.filter;
     }
-    addPokemon(pokemon: Pokemon): Observable<boolean> {
-        const oldLength = POKEMON.length;
-        pokemon.id = oldLength + 1;
-        return of(POKEMON.push(pokemon)).pipe(
-            map((length: Number) => {
-                return length > oldLength;
-            }
-        ));
+    addPokemon(pokemon: Pokemon): Observable<Pokemon> {
+        return this.http.post<Pokemon>(this.pokeUrl, pokemon, this.httpOptions);
     }
     cleanName(name: String): String {
         name = name[0].toLowerCase() + name.slice(1);

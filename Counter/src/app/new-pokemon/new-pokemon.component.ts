@@ -41,7 +41,7 @@ export class NewPokemonComponent implements OnInit {
           return of(null);
         }
       })).subscribe(result => {
-        if (result == true) this.router.navigate(['/home']);
+        if (result != null) this.router.navigate(['/home']);
       });
     }
 }
