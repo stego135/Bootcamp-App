@@ -51,13 +51,9 @@ export class PokemonService {
             })
         );
     }
-    removePokemon(pokemon: Pokemon): Observable<boolean> {
-        const index = POKEMON.indexOf(pokemon);
-        return of(POKEMON.splice(index, 1)).pipe(
-            map((deleted: Pokemon[]) => {
-                return deleted.length > 0;
-            })
-        )
+    removePokemon(id: number): Observable<Pokemon> {
+        const url = `${this.pokeUrl}/${id}`;
+        return this.http.delete<Pokemon>(url, this.httpOptions);
     }
     filterPokemon(searchTerm: string): Observable<Pokemon[]> {
         searchTerm = searchTerm.toLowerCase();

@@ -23,10 +23,10 @@ export class PokemonDetailComponent implements OnInit {
     private router: Router ) { }
 
   ngOnInit(): void {
-    this.getName();
+    this.getId();
     this.getPokemon();
   }
-  getName(): void {
+  getId(): void {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
   }
   getPokemon() {
@@ -50,10 +50,10 @@ export class PokemonDetailComponent implements OnInit {
     this.location.back();
   }
   addToHall() {
-    forkJoin([this.hallOfFameService.addPokemon(this.pokemon), this.pokemonService.removePokemon(this.pokemon)]).pipe(
+    forkJoin([this.hallOfFameService.addPokemon(this.pokemon), this.pokemonService.removePokemon(this.id)]).pipe(
       take(1),
-      map(([added, deleted]: [boolean, boolean]) => {
-        if (added && deleted) this.router.navigate(['/hall']);
+      map(([added, deleted]: [Pokemon, Pokemon]) => {
+        if (!added && !deleted) this.router.navigate(['/hall']);
       }
       )
     ).subscribe();

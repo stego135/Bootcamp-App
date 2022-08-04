@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { Pokemon } from './pokemon';
 import { SHINY } from './hall-of-fame-list';
-import { BehaviorSubject, combineLatest, map, Observable, of } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, mergeMap, Observable, of } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class HallOfFameService {
@@ -10,10 +11,14 @@ export class HallOfFameService {
     public sortedBy: Observable<string>;
     public shiny: Observable<Pokemon[]>;
     public view: Observable<Pokemon[]>;
+    private shinyUrl = 'api/shiny';
+    httpOptions = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
 
-    constructor() {
+    constructor(private http: HttpClient) {
         this.sortedBy = this.sortedStream.asObservable();
-        this.shiny = of(SHINY);
+        this.shiny = this.http.get<Pokemon[]>(this.shinyUrl);
         this.view = combineLatest([this.shiny, this.sortedBy]).pipe(
             map(([shiny, sort]) => { 
                 return this.sortShiny(shiny, sort); })
@@ -37,13 +42,14 @@ export class HallOfFameService {
         }
         return shiny;
     }
-    addPokemon(pokemon: Pokemon): Observable<boolean> {
-       const oldLength = SHINY.length;
-       pokemon.id = oldLength + 1;
-       return of(SHINY.push(pokemon)).pipe(
-        map((length: Number) => {
-            return length > oldLength;
-        }
-       ));
+    addPokemon(pokemon: Pokemon): Observable<Pokemon> {
+        return this.shiny.pipe(
+            map((shiny: Pokemon[]) => {
+                return shiny.length;
+            }),
+            mergeMap((length: number) => {
+                pokemon.id = length;
+                return this.http.post<Pokemon>(this.shinyUrl, pokemon, this.httpOptions);
+            }))
     }
 }
