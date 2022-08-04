@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Pokemon } from './pokemon';
-import { SHINY } from './hall-of-fame-list';
-import { BehaviorSubject, combineLatest, map, mergeMap, Observable, of } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, mergeMap, Observable, of, catchError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
@@ -18,7 +17,9 @@ export class HallOfFameService {
 
     constructor(private http: HttpClient) {
         this.sortedBy = this.sortedStream.asObservable();
-        this.shiny = this.http.get<Pokemon[]>(this.shinyUrl);
+        this.shiny = this.http.get<Pokemon[]>(this.shinyUrl).pipe(
+            catchError(this.handleError<Pokemon[]>('getShiny', []))
+        );
         this.view = combineLatest([this.shiny, this.sortedBy]).pipe(
             map(([shiny, sort]) => { 
                 return this.sortShiny(shiny, sort); })
@@ -49,7 +50,23 @@ export class HallOfFameService {
             }),
             mergeMap((length: number) => {
                 pokemon.id = length;
-                return this.http.post<Pokemon>(this.shinyUrl, pokemon, this.httpOptions);
+                return this.http.post<Pokemon>(this.shinyUrl, pokemon, this.httpOptions).pipe(
+                    catchError(this.handleError<Pokemon>('addShiny'))
+                );
             }))
+    }
+
+    private handleError<T>(operation = 'operation', result?: T) {
+        return (error: any): Observable<T> => {
+      
+          // TODO: send the error to remote logging infrastructure
+          console.error(error); // log to console instead
+      
+          // TODO: better job of transforming error for user consumption
+          console.log(`${operation} failed: ${error.message}`);
+      
+          // Let the app keep running by returning an empty result.
+          return of(result as T);
+        };
     }
 }

@@ -2,7 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, map, BehaviorSubject, switchMap, catchError, mergeMap } from 'rxjs';
 import { Pokemon } from './pokemon';
-import { POKEMON } from './pokemon-list';
 import { ImageData } from './image';
 
 @Injectable()
@@ -22,7 +21,9 @@ export class PokemonService {
             switchMap(searchTerm => {
                 if (!searchTerm) {
                     this.filteredStream.next(false);
-                    return this.http.get<Pokemon[]>(this.pokeUrl);
+                    return this.http.get<Pokemon[]>(this.pokeUrl).pipe(
+                        catchError(this.handleError<Pokemon[]>('getPokemon', []))
+                    );
                 }
                 else {
                     this.filteredStream.next(true);
@@ -39,7 +40,9 @@ export class PokemonService {
     }
     getOnePokemon(id: number): Observable<Pokemon> {
         const url = `${this.pokeUrl}/${id}`;
-        return this.http.get<Pokemon>(url);
+        return this.http.get<Pokemon>(url).pipe(
+            catchError(this.handleError<Pokemon>(`getPokemon id=${id}`))
+        );
     }
     getImage(pokemon: Pokemon): Observable<string> {
         var lowerName = new String(pokemon.name);
@@ -53,14 +56,17 @@ export class PokemonService {
     }
     removePokemon(id: number): Observable<Pokemon> {
         const url = `${this.pokeUrl}/${id}`;
-        return this.http.delete<Pokemon>(url, this.httpOptions);
+        return this.http.delete<Pokemon>(url, this.httpOptions).pipe(
+            catchError(this.handleError<Pokemon>('removePokemon'))
+        );
     }
     filterPokemon(searchTerm: string): Observable<Pokemon[]> {
         searchTerm = searchTerm.toLowerCase();
         return this.http.get<Pokemon[]>(this.pokeUrl).pipe(
             map((currentPokemon: Pokemon[]) => {
                 return currentPokemon.filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm));
-            })
+            }),
+            catchError(this.handleError<Pokemon[]>('getPokemon', []))
         );
     }
     changeTerm(searchTerm: string) {
@@ -73,10 +79,14 @@ export class PokemonService {
         return this.filter;
     }
     addPokemon(pokemon: Pokemon): Observable<Pokemon> {
-        return this.http.post<Pokemon>(this.pokeUrl, pokemon, this.httpOptions);
+        return this.http.post<Pokemon>(this.pokeUrl, pokemon, this.httpOptions).pipe(
+            catchError(this.handleError<Pokemon>('addPokemon'))
+        );
     }
     updatePokemon(pokemon: Pokemon): Observable<Pokemon> {
-        return this.http.put<Pokemon>(this.pokeUrl, pokemon, this.httpOptions);
+        return this.http.put<Pokemon>(this.pokeUrl, pokemon, this.httpOptions).pipe(
+            catchError(this.handleError<Pokemon>('updatePokemon'))
+        );
     }
     cleanName(name: String): String {
         name = name[0].toLowerCase() + name.slice(1);
@@ -185,14 +195,18 @@ export class PokemonService {
                     catchError(_ => {return of("not");})
                 );
             }));
-            /*
-        var search = POKEMON.find(searchPokemon => searchPokemon.name == pokemon.name);
-        if (search != undefined) return of("duplicate");
-        var name = this.cleanName(pokemon.name);
-        return this.http.get("https://pokeapi.co/api/v2/pokemon/" + name).pipe(
-            map(_ => {return "add";}),
-            catchError(_ => {return of("not");})
-        )
-        */
+    }
+    private handleError<T>(operation = 'operation', result?: T) {
+        return (error: any): Observable<T> => {
+      
+          // TODO: send the error to remote logging infrastructure
+          console.error(error); // log to console instead
+      
+          // TODO: better job of transforming error for user consumption
+          console.log(`${operation} failed: ${error.message}`);
+      
+          // Let the app keep running by returning an empty result.
+          return of(result as T);
+        };
     }
 }
