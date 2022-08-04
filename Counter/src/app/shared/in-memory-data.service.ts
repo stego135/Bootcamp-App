@@ -8,11 +8,11 @@ import { Pokemon } from './pokemon';
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {
     const pokemon = [
-        {name: "Venusaur", count: 400, id: 1},
-        {name: "Oshawott", count: 24, id: 2},
-        {name: "Mew", count: 5025, id: 3},
-        {name: "Liepard", count: 1234, id: 4},
-        {name: "Naganadel", count: 2845, id: 5}
+        {id: 1, name: "Venusaur", count: 400},
+        {id: 2, name: "Oshawott", count: 24},
+        {id: 3, name: "Mew", count: 5025},
+        {id: 4, name: "Liepard", count: 1234},
+        {id: 5, name: "Naganadel", count: 2845}
     ]
     const shiny = [
         {name: "Raticate", count: 3, id: 1},

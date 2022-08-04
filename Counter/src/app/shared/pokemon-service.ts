@@ -37,10 +37,9 @@ export class PokemonService {
     getPokemon(): Observable<Pokemon[]> {
         return this.pokemon;
     }
-    getOnePokemon(id: number): Pokemon {
-        let filteredList = POKEMON.find(pokemon => pokemon.id == id);
-        if (filteredList) return filteredList;
-        return new Pokemon;
+    getOnePokemon(id: number): Observable<Pokemon> {
+        const url = `${this.pokeUrl}/${id}`;
+        return this.http.get<Pokemon>(url);
     }
     getImage(pokemon: Pokemon): Observable<string> {
         var lowerName = new String(pokemon.name);
@@ -79,6 +78,9 @@ export class PokemonService {
     }
     addPokemon(pokemon: Pokemon): Observable<Pokemon> {
         return this.http.post<Pokemon>(this.pokeUrl, pokemon, this.httpOptions);
+    }
+    updatePokemon(pokemon: Pokemon): Observable<Pokemon> {
+        return this.http.put<Pokemon>(this.pokeUrl, pokemon, this.httpOptions);
     }
     cleanName(name: String): String {
         name = name[0].toLowerCase() + name.slice(1);

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Pokemon } from '../shared/pokemon';
 import { PokemonService } from '../shared/pokemon-service';
-import { forkJoin, Observable, map, take } from 'rxjs';
+import { forkJoin, Observable, map, take, tap } from 'rxjs';
 import { HallOfFameService } from '../shared/hall-of-fame-service';
 
 @Component({
@@ -25,19 +25,26 @@ export class PokemonDetailComponent implements OnInit {
   ngOnInit(): void {
     this.getName();
     this.getPokemon();
-    this.getImageUrl();
   }
   getName(): void {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
   }
   getPokemon() {
-    this.pokemon = this.pokemonService.getOnePokemon(this.id);
+    this.pokemonService.getOnePokemon(this.id).pipe(
+      take(1),
+      map((selectedPoke: Pokemon) => {
+        this.pokemon = selectedPoke;
+      })
+    ).subscribe(_ => this.getImageUrl());
   }
   getImageUrl() {
     this.image$ = this.pokemonService.getImage(this.pokemon);
   }
   add() {
     this.pokemon.count+=1;
+    this.pokemonService.updatePokemon(this.pokemon).pipe(
+      take(1)
+    ).subscribe();
   }
   goBack(): void {
     this.location.back();
