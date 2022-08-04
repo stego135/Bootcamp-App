@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, map, BehaviorSubject, switchMap, catchError, tap } from 'rxjs';
+import { Observable, of, map, BehaviorSubject, switchMap, catchError, mergeMap } from 'rxjs';
 import { Pokemon } from './pokemon';
 import { POKEMON } from './pokemon-list';
 import { ImageData } from './image';
@@ -171,6 +171,21 @@ export class PokemonService {
     }
 
     checkNewPokemon(pokemon: Pokemon): Observable<string> {
+        return this.http.get<Pokemon[]>(this.pokeUrl).pipe(
+            map((pokeList: Pokemon[]) => {
+                var search = pokeList.find(searchPokemon => searchPokemon.name == pokemon.name);
+                if (search != undefined) return true;
+                else return false;
+            }),
+            mergeMap((isDup: boolean) => {
+                if (isDup) return of("duplicate");
+                var name = this.cleanName(pokemon.name);
+                return this.http.get("https://pokeapi.co/api/v2/pokemon/" + name).pipe(
+                    map(_ => {return "add";}),
+                    catchError(_ => {return of("not");})
+                );
+            }));
+            /*
         var search = POKEMON.find(searchPokemon => searchPokemon.name == pokemon.name);
         if (search != undefined) return of("duplicate");
         var name = this.cleanName(pokemon.name);
@@ -178,5 +193,6 @@ export class PokemonService {
             map(_ => {return "add";}),
             catchError(_ => {return of("not");})
         )
+        */
     }
 }
