@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, map, BehaviorSubject, switchMap, catchError } from 'rxjs';
+import { Observable, of, map, BehaviorSubject, switchMap, catchError, tap } from 'rxjs';
 import { Pokemon } from './pokemon';
 import { POKEMON } from './pokemon-list';
 import { ImageData } from './image';
@@ -12,13 +12,17 @@ export class PokemonService {
     public pokemon: Observable<Pokemon[]>;
     private filteredStream: BehaviorSubject<boolean> = new BehaviorSubject(false);
     public filtered: Observable<boolean>;
+    private pokeUrl = 'api/pokemon';
+    httpOptions = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
 
     constructor(private http:HttpClient) { 
         this.pokemon = this.filterStream.pipe(
             switchMap(searchTerm => {
                 if (!searchTerm) {
                     this.filteredStream.next(false);
-                    return of(POKEMON);
+                    return this.getPokemon();
                 }
                 else {
                     this.filteredStream.next(true);
@@ -31,7 +35,9 @@ export class PokemonService {
     }
     
     getPokemon(): Observable<Pokemon[]> {
-        return this.pokemon;
+        return this.http.get<Pokemon[]>(this.pokeUrl).pipe(
+            tap(pokemon => console.log(pokemon))
+        );
     }
     getOnePokemon(id: number): Pokemon {
         let filteredList = POKEMON.find(pokemon => pokemon.id == id);
@@ -39,6 +45,7 @@ export class PokemonService {
         return new Pokemon;
     }
     getImage(pokemon: Pokemon): Observable<string> {
+        console.log(pokemon.name);
         var lowerName = new String(pokemon.name);
         lowerName  = lowerName[0].toLowerCase() + lowerName.slice(1);
         lowerName = this.cleanName(lowerName);

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +14,7 @@ import { HallOfFameComponent } from './hall-of-fame/hall-of-fame.component';
 import { HallOfFameService } from './shared/hall-of-fame-service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { NewPokemonComponent } from './new-pokemon/new-pokemon.component';
+import { InMemoryDataService } from './shared/in-memory-data.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,11 @@ import { NewPokemonComponent } from './new-pokemon/new-pokemon.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    HttpClientInMemoryWebApiModule.forRoot(
+      InMemoryDataService, { dataEncapsulation: false,
+        passThruUnknownUrl: true }
+    )
   ],
   providers: [PokemonService, HallOfFameService],
   bootstrap: [AppComponent]
