@@ -22,7 +22,7 @@ export class PokemonService {
             switchMap(searchTerm => {
                 if (!searchTerm) {
                     this.filteredStream.next(false);
-                    return this.getPokemon();
+                    return this.http.get<Pokemon[]>(this.pokeUrl);
                 }
                 else {
                     this.filteredStream.next(true);
@@ -35,7 +35,7 @@ export class PokemonService {
     }
     
     getPokemon(): Observable<Pokemon[]> {
-        return this.http.get<Pokemon[]>(this.pokeUrl);
+        return this.pokemon;
     }
     getOnePokemon(id: number): Pokemon {
         let filteredList = POKEMON.find(pokemon => pokemon.id == id);
@@ -62,7 +62,11 @@ export class PokemonService {
     }
     filterPokemon(searchTerm: string): Observable<Pokemon[]> {
         searchTerm = searchTerm.toLowerCase();
-        return of(POKEMON.filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm)));
+        return this.http.get<Pokemon[]>(this.pokeUrl).pipe(
+            map((currentPokemon: Pokemon[]) => {
+                return currentPokemon.filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm));
+            })
+        );
     }
     changeTerm(searchTerm: string) {
         this.filterStream.next(searchTerm);
