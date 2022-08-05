@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { take, map, mergeMap, tap, of } from 'rxjs';
+import { take, mergeMap, of } from 'rxjs';
 import { Pokemon } from '../shared/pokemon';
 import { PokemonService } from '../shared/pokemon-service';
 
