@@ -15,6 +15,7 @@ import { HallOfFameService } from './shared/hall-of-fame-service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { NewPokemonComponent } from './new-pokemon/new-pokemon.component';
 import { InMemoryDataService } from './shared/in-memory-data.service';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { InMemoryDataService } from './shared/in-memory-data.service';
     PokemonThumbnailComponent,
     HallOfFameComponent,
     NavbarComponent,
-    NewPokemonComponent
+    NewPokemonComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

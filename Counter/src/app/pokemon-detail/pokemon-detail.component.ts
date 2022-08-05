@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Pokemon } from '../shared/pokemon';
 import { PokemonService } from '../shared/pokemon-service';
-import { forkJoin, Observable, map, take, tap } from 'rxjs';
+import { forkJoin, Observable, map, take } from 'rxjs';
 import { HallOfFameService } from '../shared/hall-of-fame-service';
 
 @Component({
@@ -33,9 +33,12 @@ export class PokemonDetailComponent implements OnInit {
     this.pokemonService.getOnePokemon(this.id).pipe(
       take(1),
       map((selectedPoke: Pokemon) => {
+        if (selectedPoke ==  null) this.router.navigate(["/error"]);
         this.pokemon = selectedPoke;
       })
-    ).subscribe(_ => this.getImageUrl());
+    ).subscribe(_ => {
+      if (this.pokemon) this.getImageUrl();
+    });
   }
   getImageUrl() {
     this.image$ = this.pokemonService.getImage(this.pokemon);
