@@ -38,3 +38,8 @@
 .back-container {
     margin-top: 70px;
 }
+img {
+    width: 100%;
+    max-width: 512px;
+    display: inline-block;
+}

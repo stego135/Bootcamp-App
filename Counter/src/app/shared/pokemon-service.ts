@@ -50,6 +50,9 @@ export class PokemonService {
         lowerName = this.cleanName(lowerName);
         return this.http.get<ImageData>("https://pokeapi.co/api/v2/pokemon/" + lowerName).pipe(
             map((data: ImageData) => {
+                if (data.sprites.other.home.front_shiny == null) {
+                    return "http://www.pngmart.com/files/2/Pokeball-PNG-Photos.png";
+                }
                 return data.sprites.other.home.front_shiny;
             })
         );
