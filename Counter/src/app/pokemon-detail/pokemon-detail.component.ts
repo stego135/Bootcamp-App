@@ -58,8 +58,6 @@ export class PokemonDetailComponent implements OnInit {
     forkJoin([this.hallOfFameService.addPokemon(this.pokemon), this.pokemonService.removePokemon(this.id)]).pipe(
       take(1),
       map(([added, deleted]: [Pokemon, Pokemon]) => {
-        console.log(added);
-        console.log(deleted);
         if (added && !deleted) this.router.navigate(['/hall']);
       }
       )
