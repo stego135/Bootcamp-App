@@ -49,7 +49,7 @@ export class HallOfFameService {
                 return shiny.length;
             }),
             mergeMap((length: number) => {
-                pokemon.id = length;
+                pokemon.id = length + 1;
                 return this.http.post<Pokemon>(this.shinyUrl, pokemon, this.httpOptions).pipe(
                     catchError(this.handleError<Pokemon>('addShiny'))
                 );

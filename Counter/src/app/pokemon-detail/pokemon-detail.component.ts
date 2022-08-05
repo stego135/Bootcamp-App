@@ -15,6 +15,7 @@ export class PokemonDetailComponent implements OnInit {
   id!: number
   pokemon: Pokemon = new Pokemon;
   image$!: Observable<string>;
+  redirect: boolean = true;
 
   constructor(private route: ActivatedRoute, 
     private pokemonService: PokemonService,
@@ -53,10 +54,13 @@ export class PokemonDetailComponent implements OnInit {
     this.location.back();
   }
   addToHall() {
+    this.redirect = false;
     forkJoin([this.hallOfFameService.addPokemon(this.pokemon), this.pokemonService.removePokemon(this.id)]).pipe(
       take(1),
       map(([added, deleted]: [Pokemon, Pokemon]) => {
-        if (!added && !deleted) this.router.navigate(['/hall']);
+        console.log(added);
+        console.log(deleted);
+        if (added && !deleted) this.router.navigate(['/hall']);
       }
       )
     ).subscribe();

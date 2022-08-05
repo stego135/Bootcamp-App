@@ -4,7 +4,7 @@
         <input id="count-form" [(ngModel)]="pokemon.count" placeholder="count"/>
         <button type="button" class="counter-add" (click)="add()">Add</button>
         <p class="hall-of-fame-text">Finally encountered that shiny? Add it to the Hall of Fame!</p>
-        <button type="button" class="hall-of-fame-add" (click)="addToHall()">Hall of Fame</button>
+        <button type="button" class="hall-of-fame-add" (click)="addToHall()" [disabled]="!redirect">Hall of Fame</button>
         <div class="back-container">
             <button type="button" class="go-back" (click)="goBack()">Go Back</button>
         </div>
