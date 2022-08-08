@@ -38,42 +38,8 @@ export class PokemonService {
                     return unfilteredPokemon.filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm)
                     && pokemon.userId == id);
                 }
-                /*
-                if(!searchTerm) {
-                    this.filteredStream.next(false);
-                    return this.http.get<Pokemon[]>(this.pokeUrl).pipe(
-                        map((pokeList: Pokemon[]) => {
-                            return pokeList.filter((pokemon: Pokemon) => pokemon.userId == id);
-                        }),
-                        catchError(this.handleError<Pokemon[]>('getPokemon', []))
-                    );
-                }
-                else {
-                    this.filteredStream.next(true);
-                    return this.filterPokemon(searchTerm, id);
-                }
-                */
             })
-        )
-        /*
-        this.pokemon = this.filterStream.pipe(
-            switchMap(searchTerm => {
-                if (!searchTerm) {
-                    this.filteredStream.next(false);
-                    return this.http.get<Pokemon[]>(this.pokeUrl).pipe(
-                        map((pokeList: Pokemon[]) => {
-                            return pokeList.filter((pokemon: Pokemon) => pokemon.userId == this.userId);
-                        }),
-                        catchError(this.handleError<Pokemon[]>('getPokemon', []))
-                    );
-                }
-                else {
-                    this.filteredStream.next(true);
-                    return this.filterPokemon(searchTerm);
-                }
-            })
-        )
-        */
+        );
         this.filtered = this.filteredStream.asObservable();
         this.filter = this.filterStream.asObservable();
     }

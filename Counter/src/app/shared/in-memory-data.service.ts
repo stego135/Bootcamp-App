@@ -15,14 +15,14 @@ export class InMemoryDataService implements InMemoryDbService {
         {id: 5, name: "Naganadel", count: 2845, userId: 2}
     ]
     const shiny = [
-        {name: "Raticate", count: 3, id: 1},
-        {name: "Audino", count: 4914, id: 2},
-        {name: "Cresselia", count: 3629, id: 3},
-        {name: "Axew", count: 497, id: 4},
-        {name: "Regieleki", count: 6310, id: 5},
-        {name: "Toxel", count: 2174, id: 6},
-        {name: "Yungoos", count: 87, id: 7},
-        {name: "Latios", count: 635, id: 8}
+        {id: 1, name: "Raticate", count: 3, userId: 1},
+        {id: 2, name: "Audino", count: 4914, userId: 1},
+        {id: 3, name: "Cresselia", count: 3629, userId: 1},
+        {id: 4, name: "Axew", count: 497, userId: 1},
+        {id: 5, name: "Regieleki", count: 6310, userId: 2},
+        {id: 6, name: "Toxel", count: 2174, userId: 2},
+        {id: 7, name: "Yungoos", count: 87, userId: 2},
+        {id: 8, name: "Latios", count: 635, userId: 2}
     ]
     const user = [
         {id: 1, userName: "test", email: "test@test.com", password: "test"}

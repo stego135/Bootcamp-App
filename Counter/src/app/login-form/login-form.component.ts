@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../shared/user';
 import { UserService } from '../shared/user-service';
 import { take, map } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -13,7 +14,8 @@ export class LoginFormComponent implements OnInit {
   password!: string;
   mouseOver: boolean = false;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, 
+    private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -24,6 +26,7 @@ export class LoginFormComponent implements OnInit {
       map((matchingUser: User[]) => {
         if (matchingUser) {
           this.userService.setId(matchingUser[0].id);
+          this.router.navigate(['/home']);
         }
       })
     ).subscribe();
