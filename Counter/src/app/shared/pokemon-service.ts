@@ -4,7 +4,9 @@ import { Observable, of, map, BehaviorSubject, switchMap, catchError, mergeMap }
 import { Pokemon } from './pokemon';
 import { ImageData } from './image';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+  })
 export class PokemonService {
     private filterStream: BehaviorSubject<string> = new BehaviorSubject("");
     public filter: Observable<string>;

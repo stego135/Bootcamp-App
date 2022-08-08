@@ -4,7 +4,9 @@ import { Pokemon } from './pokemon';
 import { BehaviorSubject, combineLatest, map, mergeMap, Observable, of, catchError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+  })
 export class HallOfFameService {
     private sortedStream: BehaviorSubject<string> = new BehaviorSubject("time");
     public sortedBy: Observable<string>;
