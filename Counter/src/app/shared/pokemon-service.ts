@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, map, BehaviorSubject, switchMap, catchError, mergeMap } from 'rxjs';
+import { Observable, of, map, BehaviorSubject, switchMap, catchError, mergeMap, combineLatest } from 'rxjs';
 import { Pokemon } from './pokemon';
 import { ImageData } from './image';
+import { UserService } from './user-service';
 
 @Injectable({
     providedIn: 'root',
@@ -11,19 +12,58 @@ export class PokemonService {
     private filterStream: BehaviorSubject<string> = new BehaviorSubject("");
     public filter: Observable<string>;
     public pokemon: Observable<Pokemon[]>;
+    public pokemonList: Observable<Pokemon[]>;
     private filteredStream: BehaviorSubject<boolean> = new BehaviorSubject(false);
     public filtered: Observable<boolean>;
+    private userId: Observable<number>;
     private pokeUrl = 'api/pokemon';
     httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
 
-    constructor(private http:HttpClient) { 
+    constructor(private http:HttpClient,
+        private userService: UserService) { 
+        this.userId = this.userService.getId();
+        this.pokemonList = this.http.get<Pokemon[]>(this.pokeUrl).pipe(
+            catchError(this.handleError<Pokemon[]>('getPokemon', []))
+        );
+        this.pokemon = combineLatest([this.userId, this.filterStream, this.pokemonList]).pipe(
+            map(([id, searchTerm, unfilteredPokemon]) => {
+                if(!searchTerm) {
+                    this.filteredStream.next(false);
+                    return unfilteredPokemon.filter((pokemon: Pokemon) => pokemon.userId == id);
+                } else {
+                    this.filteredStream.next(true);
+                    searchTerm = searchTerm.toLowerCase();
+                    return unfilteredPokemon.filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm)
+                    && pokemon.userId == id);
+                }
+                /*
+                if(!searchTerm) {
+                    this.filteredStream.next(false);
+                    return this.http.get<Pokemon[]>(this.pokeUrl).pipe(
+                        map((pokeList: Pokemon[]) => {
+                            return pokeList.filter((pokemon: Pokemon) => pokemon.userId == id);
+                        }),
+                        catchError(this.handleError<Pokemon[]>('getPokemon', []))
+                    );
+                }
+                else {
+                    this.filteredStream.next(true);
+                    return this.filterPokemon(searchTerm, id);
+                }
+                */
+            })
+        )
+        /*
         this.pokemon = this.filterStream.pipe(
             switchMap(searchTerm => {
                 if (!searchTerm) {
                     this.filteredStream.next(false);
                     return this.http.get<Pokemon[]>(this.pokeUrl).pipe(
+                        map((pokeList: Pokemon[]) => {
+                            return pokeList.filter((pokemon: Pokemon) => pokemon.userId == this.userId);
+                        }),
                         catchError(this.handleError<Pokemon[]>('getPokemon', []))
                     );
                 }
@@ -33,6 +73,7 @@ export class PokemonService {
                 }
             })
         )
+        */
         this.filtered = this.filteredStream.asObservable();
         this.filter = this.filterStream.asObservable();
     }
@@ -65,11 +106,12 @@ export class PokemonService {
             catchError(this.handleError<Pokemon>('removePokemon'))
         );
     }
-    filterPokemon(searchTerm: string): Observable<Pokemon[]> {
+    filterPokemon(searchTerm: string, id: number): Observable<Pokemon[]> {
         searchTerm = searchTerm.toLowerCase();
         return this.http.get<Pokemon[]>(this.pokeUrl).pipe(
             map((currentPokemon: Pokemon[]) => {
-                return currentPokemon.filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm));
+                return currentPokemon.filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm)
+                && pokemon.userId == id);
             }),
             catchError(this.handleError<Pokemon[]>('getPokemon', []))
         );

@@ -8,11 +8,11 @@ import { Pokemon } from './pokemon';
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {
     const pokemon = [
-        {id: 1, name: "Venusaur", count: 400},
-        {id: 2, name: "Oshawott", count: 24},
-        {id: 3, name: "Mew", count: 5025},
-        {id: 4, name: "Liepard", count: 1234},
-        {id: 5, name: "Naganadel", count: 2845}
+        {id: 1, name: "Venusaur", count: 400, userId: 1},
+        {id: 2, name: "Oshawott", count: 24, userId: 1},
+        {id: 3, name: "Mew", count: 5025, userId: 1},
+        {id: 4, name: "Liepard", count: 1234, userId: 2},
+        {id: 5, name: "Naganadel", count: 2845, userId: 2}
     ]
     const shiny = [
         {name: "Raticate", count: 3, id: 1},
@@ -24,7 +24,10 @@ export class InMemoryDataService implements InMemoryDbService {
         {name: "Yungoos", count: 87, id: 7},
         {name: "Latios", count: 635, id: 8}
     ]
-    return {pokemon, shiny};
+    const user = [
+        {id: 1, userName: "test", email: "test@test.com", password: "test"}
+    ]
+    return {pokemon, shiny, user};
   }
   genId(pokemon: Pokemon[]): number {
     return pokemon.length > 0 ? Math.max(...pokemon.map(pokemon => pokemon.id)) + 1 : 1;

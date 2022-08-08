@@ -5,9 +5,11 @@ import { HomeComponent } from './home/home.component';
 import { HallOfFameComponent } from './hall-of-fame/hall-of-fame.component';
 import { NewPokemonComponent } from './new-pokemon/new-pokemon.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { LoginFormComponent } from './login-form/login-form.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'login', component: LoginFormComponent},
   { path: 'home', component: HomeComponent },
   { path: 'detail/:id', component: PokemonDetailComponent },
   { path: 'hall', component: HallOfFameComponent },
