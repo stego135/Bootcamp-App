@@ -18,6 +18,7 @@ import { InMemoryDataService } from './shared/in-memory-data.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { UserService } from './shared/user-service';
+import { LoginErrorComponent } from './login-error/login-error.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { UserService } from './shared/user-service';
     NavbarComponent,
     NewPokemonComponent,
     PageNotFoundComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    LoginErrorComponent
   ],
   imports: [
     BrowserModule,

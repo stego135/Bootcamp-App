@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { PokemonService } from '../shared/pokemon-service';
 import { Pokemon } from '../shared/pokemon';
-import { Observable } from 'rxjs';
+import { Observable, take, map } from 'rxjs';
+import { UserService } from '../shared/user-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +15,10 @@ export class HomeComponent implements OnInit {
   isFiltered$: Observable<boolean>;
   filterTerm$: Observable<string>;
   
-  constructor(private pokemonService: PokemonService) { 
+  constructor(private pokemonService: PokemonService,
+    private userService: UserService,
+    private router: Router) {
+    
     this.isFiltered$ = this.pokemonService.isFiltered();
     this.filterTerm$ = this.pokemonService.getSearchTerm();
   }
@@ -28,6 +33,14 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.getPokemon();
+    this.userService.getLogIn().pipe(
+      take(1),
+      map((isUser: boolean) => {
+        if (!isUser) {
+          this.router.navigate(['/notlogin'])
+        }
+      })
+    ).subscribe();
   }
 
 }

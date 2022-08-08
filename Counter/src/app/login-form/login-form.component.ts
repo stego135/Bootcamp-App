@@ -26,6 +26,7 @@ export class LoginFormComponent implements OnInit {
       map((matchingUser: User[]) => {
         if (matchingUser) {
           this.userService.setId(matchingUser[0].id);
+          this.userService.loggedIn();
           this.router.navigate(['/home']);
         }
       })

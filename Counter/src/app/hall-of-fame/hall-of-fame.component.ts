@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { Observable, take, map } from 'rxjs';
 import { HallOfFameService } from '../shared/hall-of-fame-service';
 import { Pokemon } from '../shared/pokemon';
+import { UserService } from '../shared/user-service';
 
 @Component({
   selector: 'app-hall-of-fame',
@@ -14,9 +16,19 @@ export class HallOfFameComponent implements OnInit {
   isAsc: Boolean = false;
   isDesc: Boolean = false;
 
-  constructor(private hallOfFameService: HallOfFameService) { }
+  constructor(private hallOfFameService: HallOfFameService,
+    private userService: UserService,
+    private router: Router) { }
 
   ngOnInit(): void {
+    this.userService.getLogIn().pipe(
+      take(1),
+      map((isUser: boolean) => {
+        if (!isUser) {
+          this.router.navigate(['/notlogin'])
+        }
+      })
+    ).subscribe();
     this.getShiny();
   }
   

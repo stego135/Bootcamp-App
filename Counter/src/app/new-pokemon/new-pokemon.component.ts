@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { take, mergeMap, of } from 'rxjs';
+import { take, mergeMap, of, map } from 'rxjs';
 import { Pokemon } from '../shared/pokemon';
 import { PokemonService } from '../shared/pokemon-service';
+import { UserService } from '../shared/user-service';
 
 @Component({
   selector: 'app-new-pokemon',
@@ -17,9 +18,18 @@ export class NewPokemonComponent implements OnInit {
   notAlert = false;
 
   constructor(private pokemonService: PokemonService,
-    private router: Router) { }
+    private router: Router,
+    private userService: UserService) { }
 
   ngOnInit(): void {
+    this.userService.getLogIn().pipe(
+      take(1),
+      map((isUser: boolean) => {
+        if (!isUser) {
+          this.router.navigate(['/notlogin'])
+        }
+      })
+    ).subscribe();
   }
 
   onSubmit(formValues: Pokemon) {

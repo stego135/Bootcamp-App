@@ -5,6 +5,7 @@ import { Pokemon } from '../shared/pokemon';
 import { PokemonService } from '../shared/pokemon-service';
 import { forkJoin, Observable, map, take } from 'rxjs';
 import { HallOfFameService } from '../shared/hall-of-fame-service';
+import { UserService } from '../shared/user-service';
 
 @Component({
   selector: 'app-pokemon-detail',
@@ -21,11 +22,20 @@ export class PokemonDetailComponent implements OnInit {
     private pokemonService: PokemonService,
     private location: Location,
     private hallOfFameService: HallOfFameService,
-    private router: Router ) { }
+    private router: Router,
+    private userService: UserService ) { }
 
   ngOnInit(): void {
     this.getId();
     this.getPokemon();
+    this.userService.getLogIn().pipe(
+        take(1),
+        map((isUser: boolean) => {
+          if (!isUser) {
+            this.router.navigate(['/notlogin'])
+          }
+        })
+      ).subscribe();
   }
   getId(): void {
     this.id = Number(this.route.snapshot.paramMap.get('id'));

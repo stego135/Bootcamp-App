@@ -1,19 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map, of, BehaviorSubject } from 'rxjs';
+import { Observable, map, BehaviorSubject } from 'rxjs';
 import { User } from './user';
 
 @Injectable({
     providedIn: 'root'
 })
 export class UserService {
-    private isLoggedIn: boolean = false;
+    private isLoggedInStream: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    public isLoggedIn: Observable<boolean>;
     private idStream: BehaviorSubject<number> = new BehaviorSubject(0);
     public id: Observable<number>;
     private userUrl: string = 'api/user'
 
     constructor(private http: HttpClient) { 
         this.id = this.idStream.asObservable();
+        this.isLoggedIn = this.isLoggedInStream.asObservable();
     }
 
     getUser(id: number) {
@@ -36,5 +38,13 @@ export class UserService {
     setId(newId: number) {
         this.idStream.next(newId);
     }
-
+    getLogIn(): Observable<boolean> {
+        return this.isLoggedIn;
+    }
+    loggedIn() {
+        this.isLoggedInStream.next(true);
+    }
+    loggedOut() {
+        this.isLoggedInStream.next(false);
+    }
 }
