@@ -32,9 +32,7 @@
 .go-back {
     background-color: #373737;
     color: white;
-    position: absolute;
-    bottom: 40px;
-    right: 40px;
+    float: right;
     border-radius: 10px;
 }
 .back-container {

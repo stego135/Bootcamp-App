@@ -1,3 +1,14 @@
 .pokemon-group {
     margin: 40px;
 }
+.clear {
+    float: right;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+h2 {
+    text-align: center;
+}
+.header {
+    padding: 0px 20px;
+}

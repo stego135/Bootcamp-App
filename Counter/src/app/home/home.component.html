@@ -1,7 +1,12 @@
+<div class="header">
+    <h2>Current Shiny Hunts</h2>
+    <p *ngIf="isFiltered$ | async">Searching for: {{filterTerm$ | async}}</p>
+</div>
 <div class="pokemon-group">
     <div class="row">
         <div class="col-md-4" *ngFor="let pokemon of pokemon | async" routerLink="/detail/{{pokemon.id}}">
             <app-pokemon-thumbnail [pokemon] = "pokemon"></app-pokemon-thumbnail>
         </div>
     </div>
+    <button class="btn btn-primary clear" (click)="clearSearch()" *ngIf="isFiltered$ | async">Clear Search</button>
 </div>
