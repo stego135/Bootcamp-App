@@ -36,6 +36,12 @@ export class PokemonDetailComponent implements OnInit {
           }
         })
       ).subscribe();
+    this.userService.getId().pipe(
+      take(1),
+      map((userId: number) => {
+        if(this.pokemon.userId != userId) this.router.navigate(['/error']);
+      })
+    )
   }
   getId(): void {
     this.id = Number(this.route.snapshot.paramMap.get('id'));

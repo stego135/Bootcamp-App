@@ -13,6 +13,7 @@ import { UserService } from '../shared/user-service';
 export class NewPokemonComponent implements OnInit {
   count:number = 0;
   name!:string;
+  userId:number = 0;
   mouseOver:boolean = false;
   dupAlert = false;
   notAlert = false;
@@ -30,12 +31,17 @@ export class NewPokemonComponent implements OnInit {
         }
       })
     ).subscribe();
+    this.userService.getId().pipe(
+      take(1),
+      map((userId: number) => this.userId = userId)
+    ).subscribe();
   }
 
   onSubmit(formValues: Pokemon) {
     this.dupAlert = false;
     this.notAlert = false;
     formValues.name = formValues.name[0].toUpperCase() + formValues.name.slice(1);
+    formValues.userId = this.userId;
     this.pokemonService.checkNewPokemon(formValues).pipe(
       take(1),
       mergeMap((value: string) => {
