@@ -11,4 +11,9 @@ h2 {
 }
 .header {
     padding: 0px 20px;
+    margin-bottom: 60px;
+}
+button {
+    float: right;
+    margin-right: 20px;
 }
