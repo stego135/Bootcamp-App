@@ -37,6 +37,7 @@ export class HallOfFameComponent implements OnInit {
     this.isTime = true;
     this.isAsc = false;
     this.isDesc = false;
+    this.sortOrder();
   }
   sortOrder() {
     this.hallOfFameService.changePhrase("time");
