@@ -28,23 +28,22 @@ export class UserService {
     getId(): Observable<number> {
         return this.id;
     }
-    logIn(email: string, password: string): Observable<User[]> {
+    checkEmail(email: string, password: string): Observable<User[]> {
         return this.http.get<User[]>(this.userUrl).pipe(
             map((userList: User[]) => {
                 return userList.filter(user => user.email == email && user.password == password);
             })
         )
     }
-    setId(newId: number) {
+    logIn(newId: number) {
         this.idStream.next(newId);
+        this.isLoggedInStream.next(true);
     }
     getLogIn(): Observable<boolean> {
         return this.isLoggedIn;
     }
-    loggedIn() {
-        this.isLoggedInStream.next(true);
-    }
-    loggedOut() {
+    logOut() {
         this.isLoggedInStream.next(false);
+        this.idStream.next(0);
     }
 }

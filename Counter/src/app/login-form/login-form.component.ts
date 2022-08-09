@@ -21,12 +21,11 @@ export class LoginFormComponent implements OnInit {
   }
 
   onSubmit(formValues: User) {
-    this.userService.logIn(formValues.email, formValues.password).pipe(
+    this.userService.checkEmail(formValues.email, formValues.password).pipe(
       take(1),
       map((matchingUser: User[]) => {
         if (matchingUser) {
-          this.userService.setId(matchingUser[0].id);
-          this.userService.loggedIn();
+          this.userService.logIn(matchingUser[0].id);
           this.router.navigate(['/home']);
         }
       })

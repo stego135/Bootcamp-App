@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 import { Pokemon } from './pokemon';
+import { User } from './user';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +30,7 @@ export class InMemoryDataService implements InMemoryDbService {
     ]
     return {pokemon, shiny, user};
   }
-  genId(pokemon: Pokemon[]): number {
-    return pokemon.length > 0 ? Math.max(...pokemon.map(pokemon => pokemon.id)) + 1 : 1;
+  genId<T extends Pokemon | User>(array: T[]): number {
+    return array.length > 0 ? Math.max(...array.map(item => item.id)) + 1 : 1;
   }
 }
