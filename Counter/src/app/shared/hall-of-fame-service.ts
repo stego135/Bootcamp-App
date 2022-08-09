@@ -23,18 +23,6 @@ export class HallOfFameService {
     constructor(private http: HttpClient, private userService: UserService) {
         this.sortedBy = this.sortedStream.asObservable();
         this.userId = this.userService.getId();
-        /*
-        this.shiny = this.userId.pipe(
-            mergeMap((id: number) => {
-                return this.http.get<Pokemon[]>(this.shinyUrl).pipe(
-                    map((unsortedShiny: Pokemon[]) => {
-                        return unsortedShiny.filter((pokemon: Pokemon) => pokemon.userId == id)
-                    }),
-                    catchError(this.handleError<Pokemon[]>('getShiny', []))
-                )
-            })
-        )
-        */
         this.unfilteredShiny = this.http.get<Pokemon[]>(this.shinyUrl).pipe(
             catchError(this.handleError<Pokemon[]>('getShiny', []))
         )

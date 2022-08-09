@@ -26,7 +26,7 @@ export class InMemoryDataService implements InMemoryDbService {
         {id: 8, name: "Latios", count: 635, userId: 2}
     ]
     const user = [
-        {id: 1, userName: "test", email: "test@test.com", password: "test"}
+        {id: 1, email: "test@test.com", password: "test"}
     ]
     return {pokemon, shiny, user};
   }

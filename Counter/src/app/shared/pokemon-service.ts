@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, map, BehaviorSubject, switchMap, catchError, mergeMap, combineLatest } from 'rxjs';
+import { Observable, of, map, BehaviorSubject, catchError, mergeMap, combineLatest } from 'rxjs';
 import { Pokemon } from './pokemon';
 import { ImageData } from './image';
 import { UserService } from './user-service';
