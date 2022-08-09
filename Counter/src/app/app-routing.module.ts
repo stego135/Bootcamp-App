@@ -7,6 +7,7 @@ import { NewPokemonComponent } from './new-pokemon/new-pokemon.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { LoginErrorComponent } from './login-error/login-error.component';
+import { CreateAccountComponent } from './create-account/create-account.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'hall', component: HallOfFameComponent },
   { path: 'new', component: NewPokemonComponent },
   { path: 'notlogin', component: LoginErrorComponent},
+  { path: 'newaccount', component: CreateAccountComponent},
   { path: 'error', component: PageNotFoundComponent },
   { path: '**', redirectTo: '/error' }
 ];

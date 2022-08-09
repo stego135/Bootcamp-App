@@ -19,6 +19,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { LoginFormComponent } from './login-form/login-form.component';
 import { UserService } from './shared/user-service';
 import { LoginErrorComponent } from './login-error/login-error.component';
+import { CreateAccountComponent } from './create-account/create-account.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { LoginErrorComponent } from './login-error/login-error.component';
     NewPokemonComponent,
     PageNotFoundComponent,
     LoginFormComponent,
-    LoginErrorComponent
+    LoginErrorComponent,
+    CreateAccountComponent
   ],
   imports: [
     BrowserModule,

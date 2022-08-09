@@ -1,23 +1,23 @@
 <div>
-    <h2>Log In</h2>
+    <h2>Create Account</h2>
 </div>
-<form class="row g-3 log-form" (ngSubmit)="onSubmit(loginForm.value)" #loginForm="ngForm">
+<form class="row g-3 log-form" (ngSubmit)="onSubmit(accountForm.value)" #accountForm="ngForm">
     <div class="mb-3 form-group">
         <label for="email" class="form-label">Email</label>
-        <p *ngIf="loginForm.controls['email']?.invalid && (loginForm.controls['email']?.touched || mouseOver)" 
+        <p *ngIf="accountForm.controls['email']?.invalid && (accountForm.controls['email']?.touched || mouseOver)" 
         class="error-message">Required</p>
         <input type="email" (ngModel)="email" name="email" class="form-control" id="email" required>
     </div>
     <div class="mb-3 form-group">
         <label for="password" class="form-label">Password</label>
-        <p *ngIf="loginForm.controls['password']?.invalid && (loginForm.controls['password']?.touched || mouseOver)"
+        <p *ngIf="accountForm.controls['password']?.invalid && (accountForm.controls['password']?.touched || mouseOver)"
          class="error-message">Required</p>
         <input type="password" [(ngModel)]="password" name="password" class="form-control" id="password" required>
     </div>
     <span>
     <span (mouseover)="mouseOver=true" (mouseleave)="mouseOver=false">
         <button type="submit" class="btn btn-primary mb-3" 
-        [disabled]="loginForm.invalid">Log In</button>
+        [disabled]="accountForm.invalid">Create Account</button>
     </span>
     </span>
 </form>
