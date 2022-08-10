@@ -16,3 +16,9 @@ h2 {
     color: #f00000;
     margin: 0%;
 }
+
+@media only screen and (min-width: 540px) {
+    .new-account {
+        float: right;
+    }
+}
