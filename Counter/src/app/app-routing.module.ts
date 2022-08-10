@@ -8,10 +8,12 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { LoginFormComponent } from './login-form/login-form.component';
 import { LoginErrorComponent } from './login-error/login-error.component';
 import { CreateAccountComponent } from './create-account/create-account.component';
+import { IntroComponent } from './intro/intro.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', component: LoginFormComponent},
+  { path: '', redirectTo: '/intro', pathMatch: 'full' },
+  { path: 'intro', component: IntroComponent },
+  { path: 'login', component: LoginFormComponent },
   { path: 'home', component: HomeComponent },
   { path: 'detail/:id', component: PokemonDetailComponent },
   { path: 'hall', component: HallOfFameComponent },

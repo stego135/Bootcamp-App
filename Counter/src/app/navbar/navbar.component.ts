@@ -32,6 +32,7 @@ export class NavbarComponent implements OnInit {
     this.userService.logOut();
     this.searchTerm = "";
     this.pokemonService.changeTerm("");
+    this.router.navigate(['/intro']);
   }
 
 }

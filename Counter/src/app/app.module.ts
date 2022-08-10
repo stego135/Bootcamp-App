@@ -20,6 +20,7 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import { UserService } from './shared/user-service';
 import { LoginErrorComponent } from './login-error/login-error.component';
 import { CreateAccountComponent } from './create-account/create-account.component';
+import { IntroComponent } from './intro/intro.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { CreateAccountComponent } from './create-account/create-account.componen
     PageNotFoundComponent,
     LoginFormComponent,
     LoginErrorComponent,
-    CreateAccountComponent
+    CreateAccountComponent,
+    IntroComponent
   ],
   imports: [
     BrowserModule,
