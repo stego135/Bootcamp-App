@@ -23,7 +23,7 @@ export class LoginFormComponent implements OnInit {
 
   onSubmit(formValues: User) {
     this.accountError = false;
-    this.userService.checkEmail(formValues.email, formValues.password).pipe(
+    this.userService.checkAccount(formValues.email, formValues.password).pipe(
       take(1),
       map((matchingUser: User[]) => {
         if (matchingUser.length != 0) {

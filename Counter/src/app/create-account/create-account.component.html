@@ -20,4 +20,8 @@
         [disabled]="accountForm.invalid">Create Account</button>
     </span>
     </span>
+    <div class="alert alert-danger" role="alert" *ngIf="dupError">
+        The account that you entered already exists. Try logging in instead!
+    </div>
+    <button class="btn btn-primary redirect" *ngIf="dupError" routerLink="/login">Log in</button>
 </form>

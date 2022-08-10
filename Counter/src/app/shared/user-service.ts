@@ -31,10 +31,17 @@ export class UserService {
     getId(): Observable<number> {
         return this.id;
     }
-    checkEmail(email: string, password: string): Observable<User[]> {
+    checkAccount(email: string, password: string): Observable<User[]> {
         return this.http.get<User[]>(this.userUrl).pipe(
             map((userList: User[]) => {
                 return userList.filter(user => user.email == email && user.password == password);
+            })
+        )
+    }
+    checkEmail(email: string): Observable<User[]> {
+        return this.http.get<User[]>(this.userUrl).pipe(
+            map((userList: User[]) => {
+                return userList.filter(user => user.email == email);
             })
         )
     }
