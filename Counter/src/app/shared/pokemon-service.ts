@@ -192,23 +192,14 @@ export class PokemonService {
         }
         return name;
     }
-
-    checkNewPokemon(pokemon: Pokemon): Observable<string> {
-        return this.http.get<Pokemon[]>(this.pokeUrl).pipe(
-            map((pokeList: Pokemon[]) => {
-                var search = pokeList.find(searchPokemon => searchPokemon.name == pokemon.name);
-                if (search != undefined) return true;
-                else return false;
-            }),
-            mergeMap((isDup: boolean) => {
-                if (isDup) return of("duplicate");
-                var name = this.cleanName(pokemon.name);
-                return this.http.get("https://pokeapi.co/api/v2/pokemon/" + name).pipe(
-                    map(_ => {return "add";}),
-                    catchError(_ => {return of("not");})
-                );
-            }));
+    checkNewPokemon(pokemon: Pokemon): Observable<boolean> {
+        var name = this.cleanName(pokemon.name);
+        return this.http.get("https://pokeapi.co/api/v2/pokemon/" + name).pipe(
+            map(_ => {return true;}),
+            catchError(_ => {return of(false);})
+        );
     }
+
     private handleError<T>(operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
       

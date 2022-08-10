@@ -15,7 +15,6 @@ export class NewPokemonComponent implements OnInit {
   name!:string;
   userId:number = 0;
   mouseOver:boolean = false;
-  dupAlert = false;
   notAlert = false;
 
   constructor(private pokemonService: PokemonService,
@@ -38,20 +37,13 @@ export class NewPokemonComponent implements OnInit {
   }
 
   onSubmit(formValues: Pokemon) {
-    this.dupAlert = false;
     this.notAlert = false;
     formValues.name = formValues.name[0].toUpperCase() + formValues.name.slice(1);
     formValues.userId = this.userId;
     this.pokemonService.checkNewPokemon(formValues).pipe(
       take(1),
-      mergeMap((value: string) => {
-        if (value == "add") {
-          return this.pokemonService.addPokemon(formValues);
-        }
-        else if (value == "duplicate") {
-          this.dupAlert = true;
-          return of(null);
-        }
+      mergeMap((isPokemon: boolean) => {
+        if (isPokemon) return this.pokemonService.addPokemon(formValues);
         else {
           this.notAlert = true;
           return of(null);
@@ -59,5 +51,5 @@ export class NewPokemonComponent implements OnInit {
       })).subscribe(result => {
         if (result != null) this.router.navigate(['/home']);
       });
-    }
+  }
 }
