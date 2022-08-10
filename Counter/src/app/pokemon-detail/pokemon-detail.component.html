@@ -8,6 +8,14 @@
         <div class="back-container">
             <button type="button" class="go-back" (click)="goBack()">Go Back</button>
         </div>
+        <div class="delete-container">
+            <button type="button" class="delete" (click)="warning()">Delete Pokémon</button>
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="isDelete">
+            Are you sure you want to delete this Pokémon?
+            <button type="button" class="btn btn-danger" (click)="delete()">Yes</button>
+            <button type="button" class="btn btn-warning" (click)="clear()">No</button>
+        </div>
     </div>
     <div class="col-md-6 order-md-1 image">
         <h2>{{pokemon.name}}</h2>
