@@ -21,4 +21,7 @@
     </span>
     <button class="btn btn-warning mb-3" routerLink="/newaccount">Don't have an account? Create one here!</button>
     </span>
+    <div class="alert alert-danger" role="alert" *ngIf="accountError">
+        The account that you entered doesn't seem to exist. Either check your spelling or create an account!
+    </div>
 </form>

@@ -13,6 +13,7 @@ export class LoginFormComponent implements OnInit {
   email!: string;
   password!: string;
   mouseOver: boolean = false;
+  accountError: boolean = false;
 
   constructor(private userService: UserService, 
     private router: Router) { }
@@ -21,12 +22,15 @@ export class LoginFormComponent implements OnInit {
   }
 
   onSubmit(formValues: User) {
+    this.accountError = false;
     this.userService.checkEmail(formValues.email, formValues.password).pipe(
       take(1),
       map((matchingUser: User[]) => {
-        if (matchingUser) {
+        if (matchingUser.length != 0) {
           this.userService.logIn(matchingUser[0].id);
           this.router.navigate(['/home']);
+        } else {
+          this.accountError = true;
         }
       })
     ).subscribe();
