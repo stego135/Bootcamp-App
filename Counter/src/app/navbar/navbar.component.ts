@@ -30,6 +30,8 @@ export class NavbarComponent implements OnInit {
 
   logOut() {
     this.userService.logOut();
+    this.searchTerm = "";
+    this.pokemonService.changeTerm("");
   }
 
 }
