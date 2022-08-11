@@ -19,10 +19,10 @@ h2 {
 .intro {
     position: relative;
 }
-.newacc {
+.left-button {
     margin-right: 10px;
 }
-.login {
+.right-button {
     margin-left: 10px;
 }
 p {

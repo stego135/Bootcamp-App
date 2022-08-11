@@ -11,8 +11,14 @@
             of encounters it took. Happy hunting!
         </p>
         <div class="bottom-buttons">
-            <button class="btn btn-primary newacc" routerLink="/newaccount">Get started here!</button>
-            <button class="btn btn-warning login" routerLink="/login">Already have an account? Log in here!</button>
+            <button class="btn btn-primary left-button" routerLink="/newaccount" 
+            *ngIf="!(isLoggedIn | async)">Get started here!</button>
+            <button class="btn btn-warning right-button" routerLink="/login" 
+            *ngIf="!(isLoggedIn | async)">Already have an account? Log in here!</button>
+            <button class="btn btn-primary left-button" routerLink="/home" 
+            *ngIf="isLoggedIn | async">Check out your ongoing shiny hunts!</button>
+            <button class="btn btn-warning right-button" routerLink="/hall" 
+            *ngIf="isLoggedIn | async">Here's a list of all the shiny Pokémon you have!</button>
         </div>
     </div>
 </div>
