@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { take, map, mergeMap, tap, of } from 'rxjs';
+import { take, mergeMap, of } from 'rxjs';
 import { Pokemon } from '../shared/pokemon';
 import { PokemonService } from '../shared/pokemon-service';
 
@@ -41,7 +41,7 @@ export class NewPokemonComponent implements OnInit {
           return of(null);
         }
       })).subscribe(result => {
-        if (result == true) this.router.navigate(['/home']);
+        if (result != null) this.router.navigate(['/home']);
       });
     }
 }

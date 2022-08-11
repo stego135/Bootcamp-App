@@ -1,24 +1,31 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, map, BehaviorSubject, switchMap, catchError } from 'rxjs';
+import { Observable, of, map, BehaviorSubject, switchMap, catchError, mergeMap } from 'rxjs';
 import { Pokemon } from './pokemon';
-import { POKEMON } from './pokemon-list';
 import { ImageData } from './image';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+  })
 export class PokemonService {
     private filterStream: BehaviorSubject<string> = new BehaviorSubject("");
     public filter: Observable<string>;
     public pokemon: Observable<Pokemon[]>;
     private filteredStream: BehaviorSubject<boolean> = new BehaviorSubject(false);
     public filtered: Observable<boolean>;
+    private pokeUrl = 'api/pokemon';
+    httpOptions = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
 
     constructor(private http:HttpClient) { 
         this.pokemon = this.filterStream.pipe(
             switchMap(searchTerm => {
                 if (!searchTerm) {
                     this.filteredStream.next(false);
-                    return of(POKEMON);
+                    return this.http.get<Pokemon[]>(this.pokeUrl).pipe(
+                        catchError(this.handleError<Pokemon[]>('getPokemon', []))
+                    );
                 }
                 else {
                     this.filteredStream.next(true);
@@ -33,10 +40,11 @@ export class PokemonService {
     getPokemon(): Observable<Pokemon[]> {
         return this.pokemon;
     }
-    getOnePokemon(id: number): Pokemon {
-        let filteredList = POKEMON.find(pokemon => pokemon.id == id);
-        if (filteredList) return filteredList;
-        return new Pokemon;
+    getOnePokemon(id: number): Observable<Pokemon> {
+        const url = `${this.pokeUrl}/${id}`;
+        return this.http.get<Pokemon>(url).pipe(
+            catchError(this.handleError<Pokemon>(`getPokemon id=${id}`))
+        );
     }
     getImage(pokemon: Pokemon): Observable<string> {
         var lowerName = new String(pokemon.name);
@@ -44,21 +52,27 @@ export class PokemonService {
         lowerName = this.cleanName(lowerName);
         return this.http.get<ImageData>("https://pokeapi.co/api/v2/pokemon/" + lowerName).pipe(
             map((data: ImageData) => {
+                if (data.sprites.other.home.front_shiny == null) {
+                    return "http://www.pngmart.com/files/2/Pokeball-PNG-Photos.png";
+                }
                 return data.sprites.other.home.front_shiny;
             })
         );
     }
-    removePokemon(pokemon: Pokemon): Observable<boolean> {
-        const index = POKEMON.indexOf(pokemon);
-        return of(POKEMON.splice(index, 1)).pipe(
-            map((deleted: Pokemon[]) => {
-                return deleted.length > 0;
-            })
-        )
+    removePokemon(id: number): Observable<Pokemon> {
+        const url = `${this.pokeUrl}/${id}`;
+        return this.http.delete<Pokemon>(url, this.httpOptions).pipe(
+            catchError(this.handleError<Pokemon>('removePokemon'))
+        );
     }
     filterPokemon(searchTerm: string): Observable<Pokemon[]> {
         searchTerm = searchTerm.toLowerCase();
-        return of(POKEMON.filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm)));
+        return this.http.get<Pokemon[]>(this.pokeUrl).pipe(
+            map((currentPokemon: Pokemon[]) => {
+                return currentPokemon.filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm));
+            }),
+            catchError(this.handleError<Pokemon[]>('getPokemon', []))
+        );
     }
     changeTerm(searchTerm: string) {
         this.filterStream.next(searchTerm);
@@ -69,14 +83,15 @@ export class PokemonService {
     getSearchTerm(): Observable<string> {
         return this.filter;
     }
-    addPokemon(pokemon: Pokemon): Observable<boolean> {
-        const oldLength = POKEMON.length;
-        pokemon.id = oldLength + 1;
-        return of(POKEMON.push(pokemon)).pipe(
-            map((length: Number) => {
-                return length > oldLength;
-            }
-        ));
+    addPokemon(pokemon: Pokemon): Observable<Pokemon> {
+        return this.http.post<Pokemon>(this.pokeUrl, pokemon, this.httpOptions).pipe(
+            catchError(this.handleError<Pokemon>('addPokemon'))
+        );
+    }
+    updatePokemon(pokemon: Pokemon): Observable<Pokemon> {
+        return this.http.put<Pokemon>(this.pokeUrl, pokemon, this.httpOptions).pipe(
+            catchError(this.handleError<Pokemon>('updatePokemon'))
+        );
     }
     cleanName(name: String): String {
         name = name[0].toLowerCase() + name.slice(1);
@@ -171,12 +186,32 @@ export class PokemonService {
     }
 
     checkNewPokemon(pokemon: Pokemon): Observable<string> {
-        var search = POKEMON.find(searchPokemon => searchPokemon.name == pokemon.name);
-        if (search != undefined) return of("duplicate");
-        var name = this.cleanName(pokemon.name);
-        return this.http.get("https://pokeapi.co/api/v2/pokemon/" + name).pipe(
-            map(_ => {return "add";}),
-            catchError(_ => {return of("not");})
-        )
+        return this.http.get<Pokemon[]>(this.pokeUrl).pipe(
+            map((pokeList: Pokemon[]) => {
+                var search = pokeList.find(searchPokemon => searchPokemon.name == pokemon.name);
+                if (search != undefined) return true;
+                else return false;
+            }),
+            mergeMap((isDup: boolean) => {
+                if (isDup) return of("duplicate");
+                var name = this.cleanName(pokemon.name);
+                return this.http.get("https://pokeapi.co/api/v2/pokemon/" + name).pipe(
+                    map(_ => {return "add";}),
+                    catchError(_ => {return of("not");})
+                );
+            }));
+    }
+    private handleError<T>(operation = 'operation', result?: T) {
+        return (error: any): Observable<T> => {
+      
+          // TODO: send the error to remote logging infrastructure
+          console.error(error); // log to console instead
+      
+          // TODO: better job of transforming error for user consumption
+          console.log(`${operation} failed: ${error.message}`);
+      
+          // Let the app keep running by returning an empty result.
+          return of(result as T);
+        };
     }
 }

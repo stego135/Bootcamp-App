@@ -1,19 +1,27 @@
 import { Injectable } from '@angular/core';
 
 import { Pokemon } from './pokemon';
-import { SHINY } from './hall-of-fame-list';
-import { BehaviorSubject, combineLatest, map, Observable, of } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, mergeMap, Observable, of, catchError } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+  })
 export class HallOfFameService {
     private sortedStream: BehaviorSubject<string> = new BehaviorSubject("time");
     public sortedBy: Observable<string>;
     public shiny: Observable<Pokemon[]>;
     public view: Observable<Pokemon[]>;
+    private shinyUrl = 'api/shiny';
+    httpOptions = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
 
-    constructor() {
+    constructor(private http: HttpClient) {
         this.sortedBy = this.sortedStream.asObservable();
-        this.shiny = of(SHINY);
+        this.shiny = this.http.get<Pokemon[]>(this.shinyUrl).pipe(
+            catchError(this.handleError<Pokemon[]>('getShiny', []))
+        );
         this.view = combineLatest([this.shiny, this.sortedBy]).pipe(
             map(([shiny, sort]) => { 
                 return this.sortShiny(shiny, sort); })
@@ -37,13 +45,30 @@ export class HallOfFameService {
         }
         return shiny;
     }
-    addPokemon(pokemon: Pokemon): Observable<boolean> {
-       const oldLength = SHINY.length;
-       pokemon.id = oldLength + 1;
-       return of(SHINY.push(pokemon)).pipe(
-        map((length: Number) => {
-            return length > oldLength;
-        }
-       ));
+    addPokemon(pokemon: Pokemon): Observable<Pokemon> {
+        return this.shiny.pipe(
+            map((shiny: Pokemon[]) => {
+                return shiny.length;
+            }),
+            mergeMap((length: number) => {
+                pokemon.id = length + 1;
+                return this.http.post<Pokemon>(this.shinyUrl, pokemon, this.httpOptions).pipe(
+                    catchError(this.handleError<Pokemon>('addShiny'))
+                );
+            }))
+    }
+
+    private handleError<T>(operation = 'operation', result?: T) {
+        return (error: any): Observable<T> => {
+      
+          // TODO: send the error to remote logging infrastructure
+          console.error(error); // log to console instead
+      
+          // TODO: better job of transforming error for user consumption
+          console.log(`${operation} failed: ${error.message}`);
+      
+          // Let the app keep running by returning an empty result.
+          return of(result as T);
+        };
     }
 }

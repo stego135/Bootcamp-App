@@ -15,6 +15,7 @@ export class PokemonDetailComponent implements OnInit {
   id!: number
   pokemon: Pokemon = new Pokemon;
   image$!: Observable<string>;
+  redirect: boolean = true;
 
   constructor(private route: ActivatedRoute, 
     private pokemonService: PokemonService,
@@ -23,30 +24,41 @@ export class PokemonDetailComponent implements OnInit {
     private router: Router ) { }
 
   ngOnInit(): void {
-    this.getName();
+    this.getId();
     this.getPokemon();
-    this.getImageUrl();
   }
-  getName(): void {
+  getId(): void {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
   }
   getPokemon() {
-    this.pokemon = this.pokemonService.getOnePokemon(this.id);
+    this.pokemonService.getOnePokemon(this.id).pipe(
+      take(1),
+      map((selectedPoke: Pokemon) => {
+        if (selectedPoke ==  null) this.router.navigate(["/error"]);
+        this.pokemon = selectedPoke;
+      })
+    ).subscribe(_ => {
+      if (this.pokemon) this.getImageUrl();
+    });
   }
   getImageUrl() {
     this.image$ = this.pokemonService.getImage(this.pokemon);
   }
   add() {
     this.pokemon.count+=1;
+    this.pokemonService.updatePokemon(this.pokemon).pipe(
+      take(1)
+    ).subscribe();
   }
   goBack(): void {
     this.location.back();
   }
   addToHall() {
-    forkJoin([this.hallOfFameService.addPokemon(this.pokemon), this.pokemonService.removePokemon(this.pokemon)]).pipe(
+    this.redirect = false;
+    forkJoin([this.hallOfFameService.addPokemon(this.pokemon), this.pokemonService.removePokemon(this.id)]).pipe(
       take(1),
-      map(([added, deleted]: [boolean, boolean]) => {
-        if (added && deleted) this.router.navigate(['/hall']);
+      map(([added, deleted]: [Pokemon, Pokemon]) => {
+        if (added && !deleted) this.router.navigate(['/hall']);
       }
       )
     ).subscribe();
