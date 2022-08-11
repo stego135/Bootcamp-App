@@ -15,7 +15,6 @@ export class PokemonService {
     public pokemonList: Observable<Pokemon[]>;
     private filteredStream: BehaviorSubject<boolean> = new BehaviorSubject(false);
     public filtered: Observable<boolean>;
-    private userId: Observable<number>;
     private pokeUrl = 'api/pokemon';
     httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -23,11 +22,10 @@ export class PokemonService {
 
     constructor(private http:HttpClient,
         private userService: UserService) { 
-        this.userId = this.userService.getId();
         this.pokemonList = this.http.get<Pokemon[]>(this.pokeUrl).pipe(
             catchError(this.handleError<Pokemon[]>('getPokemon', []))
         );
-        this.pokemon = combineLatest([this.userId, this.filterStream, this.pokemonList]).pipe(
+        this.pokemon = combineLatest([this.userService.getId(), this.filterStream, this.pokemonList]).pipe(
             map(([id, searchTerm, unfilteredPokemon]) => {
                 if(!searchTerm) {
                     this.filteredStream.next(false);

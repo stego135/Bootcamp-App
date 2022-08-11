@@ -14,7 +14,6 @@ export class HallOfFameService {
     private unfilteredShiny: Observable<Pokemon[]>
     public shiny: Observable<Pokemon[]>;
     public view: Observable<Pokemon[]>;
-    private userId: Observable<number>;
     private shinyUrl = 'api/shiny';
     httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -22,11 +21,10 @@ export class HallOfFameService {
 
     constructor(private http: HttpClient, private userService: UserService) {
         this.sortedBy = this.sortedStream.asObservable();
-        this.userId = this.userService.getId();
         this.unfilteredShiny = this.http.get<Pokemon[]>(this.shinyUrl).pipe(
             catchError(this.handleError<Pokemon[]>('getShiny', []))
         )
-        this.shiny = combineLatest([this.unfilteredShiny, this.userId]).pipe(
+        this.shiny = combineLatest([this.unfilteredShiny, this.userService.getId()]).pipe(
             map(([unfiltered, id]) => {
                 return unfiltered.filter(pokemon => pokemon.userId == id);
             })
