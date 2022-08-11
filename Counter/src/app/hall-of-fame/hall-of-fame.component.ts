@@ -12,9 +12,9 @@ import { UserService } from '../shared/user-service';
 })
 export class HallOfFameComponent implements OnInit {
   shiny!: Observable<Pokemon[]>;
-  isTime: Boolean = true;
-  isAsc: Boolean = false;
-  isDesc: Boolean = false;
+  isTime: boolean = true;
+  isAsc: boolean = false;
+  isDesc: boolean = false;
 
   constructor(private hallOfFameService: HallOfFameService,
     private userService: UserService,
