@@ -18,6 +18,7 @@ export class PokemonDetailComponent implements OnInit {
   image$!: Observable<string>;
   redirect: boolean = true;
   isDelete: boolean = false;
+  isHall: boolean = false;
 
   constructor(private route: ActivatedRoute, 
     private pokemonService: PokemonService,
@@ -83,10 +84,13 @@ export class PokemonDetailComponent implements OnInit {
   delete() {
     this.pokemonService.removePokemon(this.id).subscribe(_ => this.location.back());
   }
-  warning() {
-    this.isDelete = true;
+  warning(isDelete: boolean) {
+    if (isDelete) this.isDelete = true;
+    else this.isHall = true;
+    
   }
-  clear() {
-    this.isDelete = false;
+  clear(isDelete: boolean) {
+    if(isDelete) this.isDelete = false;
+    else this.isHall = false;
   }
 }
