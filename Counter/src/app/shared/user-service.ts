@@ -21,7 +21,7 @@ export class UserService {
         this.isLoggedIn = this.isLoggedInStream.asObservable();
     }
 
-    getUser(id: number) {
+    getUser(id: number): Observable<User> {
         const url = `${this.userUrl}/${id}`;
         return this.http.get<User>(url);
     }
