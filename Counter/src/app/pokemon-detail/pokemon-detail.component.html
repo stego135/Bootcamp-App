@@ -13,13 +13,13 @@
         </div>
         <div class="alert alert-danger" role="alert" *ngIf="isDelete">
             Are you sure you want to delete this Pokémon?
-            <button type="button" class="btn btn-danger" (click)="delete()">Yes</button>
-            <button type="button" class="btn btn-warning" (click)="clear(true)">No</button>
+            <button type="button" class="btn btn-dark" (click)="delete()">Yes</button>
+            <button type="button" class="btn btn-danger" (click)="clear(true)">No</button>
         </div>
         <div class="alert alert-primary" role="alert" *ngIf="isHall">
             Are you sure you want to add this Pokémon to the Hall of Fame?
-            <button type="button" class="btn btn-primary" (click)="addToHall()">Yes</button>
-            <button type="button" class="btn btn-warning" (click)="clear(false)">No</button>
+            <button type="button" class="btn btn-dark" (click)="addToHall()">Yes</button>
+            <button type="button" class="btn btn-primary" (click)="clear(false)">No</button>
         </div>
     </div>
     <div class="col-md-6 order-md-1 image">
