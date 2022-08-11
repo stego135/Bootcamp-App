@@ -10,15 +10,21 @@
             to the hall of fame where all your successful hunts will be stored along with the amount 
             of encounters it took. Happy hunting!
         </p>
-        <div class="bottom-buttons">
-            <button class="btn btn-primary left-button" routerLink="/newaccount" 
-            *ngIf="!(isLoggedIn | async)">Get started here!</button>
-            <button class="btn btn-info right-button" routerLink="/login" 
-            *ngIf="!(isLoggedIn | async)">Already have an account? Log in here!</button>
-            <button class="btn btn-primary left-button" routerLink="/home" 
-            *ngIf="isLoggedIn | async">Check out your ongoing shiny hunts!</button>
-            <button class="btn btn-info right-button" routerLink="/hall" 
-            *ngIf="isLoggedIn | async">Here's a list of all the shiny Pokémon you have!</button>
-        </div>
+        <ng-container *ngIf="(isLoggedIn | async); else notLog">
+            <div class="bottom-buttons">
+                <button class="btn btn-primary left-button" routerLink="/home" 
+                >Check out your ongoing shiny hunts!</button>
+                <button class="btn btn-info right-button" routerLink="/hall" 
+                >Here's a list of all the shiny Pokémon you have!</button>
+            </div>
+        </ng-container>
+        <ng-template #notLog>
+            <div class="bottom-buttons">
+                <button class="btn btn-primary left-button" routerLink="/newaccount" 
+                >Get started here!</button>
+                <button class="btn btn-info right-button" routerLink="/login" 
+                >Already have an account? Log in here!</button>
+            </div>
+        </ng-template>
     </div>
 </div>
