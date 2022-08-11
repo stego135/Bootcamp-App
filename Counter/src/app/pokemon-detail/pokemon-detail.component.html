@@ -18,7 +18,7 @@
         </div>
         <div class="alert alert-primary" role="alert" *ngIf="isHall">
             Are you sure you want to add this Pokémon to the Hall of Fame?
-            <button type="button" class="btn btn-dark" (click)="addToHall()">Yes</button>
+            <button type="button" class="btn btn-dark" (click)="addToHall()" [disabled]="!redirect">Yes</button>
             <button type="button" class="btn btn-primary" (click)="clear(false)">No</button>
         </div>
     </div>
