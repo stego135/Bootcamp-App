@@ -22,7 +22,6 @@ export class PokemonDetailComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, 
     private pokemonService: PokemonService,
-    private location: Location,
     private hallOfFameService: HallOfFameService,
     private router: Router,
     private userService: UserService ) { }
@@ -69,7 +68,7 @@ export class PokemonDetailComponent implements OnInit {
     ).subscribe();
   }
   goBack(): void {
-    this.location.back();
+    this.router.navigate(['/home']);
   }
   addToHall() {
     this.redirect = false;
@@ -82,7 +81,9 @@ export class PokemonDetailComponent implements OnInit {
     ).subscribe();
   }
   delete() {
-    this.pokemonService.removePokemon(this.id).subscribe(_ => this.location.back());
+    this.pokemonService.removePokemon(this.id).pipe(
+      take(1)
+    ).subscribe(_ => this.router.navigate(['/home']));
   }
   warning(isDelete: boolean) {
     if (isDelete) this.isDelete = true;
