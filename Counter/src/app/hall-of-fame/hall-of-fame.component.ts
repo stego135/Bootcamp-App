@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { Observable, take, map } from 'rxjs';
 import { HallOfFameService } from '../shared/hall-of-fame-service';
 import { Pokemon } from '../shared/pokemon';
+import { UserService } from '../shared/user-service';
 
 @Component({
   selector: 'app-hall-of-fame',
@@ -10,13 +12,23 @@ import { Pokemon } from '../shared/pokemon';
 })
 export class HallOfFameComponent implements OnInit {
   shiny!: Observable<Pokemon[]>;
-  isTime: Boolean = true;
-  isAsc: Boolean = false;
-  isDesc: Boolean = false;
+  isTime: boolean = true;
+  isAsc: boolean = false;
+  isDesc: boolean = false;
 
-  constructor(private hallOfFameService: HallOfFameService) { }
+  constructor(private hallOfFameService: HallOfFameService,
+    private userService: UserService,
+    private router: Router) { }
 
   ngOnInit(): void {
+    this.userService.getLogIn().pipe(
+      take(1),
+      map((isUser: boolean) => {
+        if (!isUser) {
+          this.router.navigate(['/notlogin'])
+        }
+      })
+    ).subscribe();
     this.getShiny();
   }
   
@@ -25,6 +37,7 @@ export class HallOfFameComponent implements OnInit {
     this.isTime = true;
     this.isAsc = false;
     this.isDesc = false;
+    this.sortOrder();
   }
   sortOrder() {
     this.hallOfFameService.changePhrase("time");

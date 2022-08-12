@@ -5,6 +5,7 @@ import { Pokemon } from '../shared/pokemon';
 import { PokemonService } from '../shared/pokemon-service';
 import { forkJoin, Observable, map, take } from 'rxjs';
 import { HallOfFameService } from '../shared/hall-of-fame-service';
+import { UserService } from '../shared/user-service';
 
 @Component({
   selector: 'app-pokemon-detail',
@@ -16,16 +17,32 @@ export class PokemonDetailComponent implements OnInit {
   pokemon: Pokemon = new Pokemon;
   image$!: Observable<string>;
   redirect: boolean = true;
+  isDelete: boolean = false;
+  isHall: boolean = false;
 
   constructor(private route: ActivatedRoute, 
     private pokemonService: PokemonService,
-    private location: Location,
     private hallOfFameService: HallOfFameService,
-    private router: Router ) { }
+    private router: Router,
+    private userService: UserService ) { }
 
   ngOnInit(): void {
     this.getId();
     this.getPokemon();
+    this.userService.getLogIn().pipe(
+        take(1),
+        map((isUser: boolean) => {
+          if (!isUser) {
+            this.router.navigate(['/notlogin'])
+          }
+        })
+      ).subscribe();
+    this.userService.getId().pipe(
+      take(1),
+      map((userId: number) => {
+        if(this.pokemon.userId != userId) this.router.navigate(['/error']);
+      })
+    )
   }
   getId(): void {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
@@ -51,7 +68,7 @@ export class PokemonDetailComponent implements OnInit {
     ).subscribe();
   }
   goBack(): void {
-    this.location.back();
+    this.router.navigate(['/home']);
   }
   addToHall() {
     this.redirect = false;
@@ -63,5 +80,18 @@ export class PokemonDetailComponent implements OnInit {
       )
     ).subscribe();
   }
-
+  delete() {
+    this.pokemonService.removePokemon(this.id).pipe(
+      take(1)
+    ).subscribe(_ => this.router.navigate(['/home']));
+  }
+  warning(isDelete: boolean) {
+    if (isDelete) this.isDelete = true;
+    else this.isHall = true;
+    
+  }
+  clear(isDelete: boolean) {
+    if(isDelete) this.isDelete = false;
+    else this.isHall = false;
+  }
 }

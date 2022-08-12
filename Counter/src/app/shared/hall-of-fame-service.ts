@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Pokemon } from './pokemon';
 import { BehaviorSubject, combineLatest, map, mergeMap, Observable, of, catchError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { UserService } from './user-service';
 
 @Injectable({
     providedIn: 'root',
@@ -10,6 +11,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class HallOfFameService {
     private sortedStream: BehaviorSubject<string> = new BehaviorSubject("time");
     public sortedBy: Observable<string>;
+    private unfilteredShiny: Observable<Pokemon[]>
     public shiny: Observable<Pokemon[]>;
     public view: Observable<Pokemon[]>;
     private shinyUrl = 'api/shiny';
@@ -17,11 +19,16 @@ export class HallOfFameService {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private userService: UserService) {
         this.sortedBy = this.sortedStream.asObservable();
-        this.shiny = this.http.get<Pokemon[]>(this.shinyUrl).pipe(
+        this.unfilteredShiny = this.http.get<Pokemon[]>(this.shinyUrl).pipe(
             catchError(this.handleError<Pokemon[]>('getShiny', []))
-        );
+        )
+        this.shiny = combineLatest([this.unfilteredShiny, this.userService.getId()]).pipe(
+            map(([unfiltered, id]) => {
+                return unfiltered.filter(pokemon => pokemon.userId == id);
+            })
+        )
         this.view = combineLatest([this.shiny, this.sortedBy]).pipe(
             map(([shiny, sort]) => { 
                 return this.sortShiny(shiny, sort); })
@@ -46,7 +53,7 @@ export class HallOfFameService {
         return shiny;
     }
     addPokemon(pokemon: Pokemon): Observable<Pokemon> {
-        return this.shiny.pipe(
+        return this.unfilteredShiny.pipe(
             map((shiny: Pokemon[]) => {
                 return shiny.length;
             }),

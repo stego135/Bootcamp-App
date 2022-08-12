@@ -16,6 +16,11 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { NewPokemonComponent } from './new-pokemon/new-pokemon.component';
 import { InMemoryDataService } from './shared/in-memory-data.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { LoginFormComponent } from './login-form/login-form.component';
+import { UserService } from './shared/user-service';
+import { LoginErrorComponent } from './login-error/login-error.component';
+import { CreateAccountComponent } from './create-account/create-account.component';
+import { IntroComponent } from './intro/intro.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +31,11 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     HallOfFameComponent,
     NavbarComponent,
     NewPokemonComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    LoginFormComponent,
+    LoginErrorComponent,
+    CreateAccountComponent,
+    IntroComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +47,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
         passThruUnknownUrl: true }
     )
   ],
-  providers: [PokemonService, HallOfFameService],
+  providers: [PokemonService, HallOfFameService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

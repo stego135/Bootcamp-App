@@ -1,0 +1,27 @@
+<div>
+    <h2>Log In</h2>
+</div>
+<form class="row g-3 log-form" (ngSubmit)="onSubmit(loginForm.value)" #loginForm="ngForm">
+    <div class="mb-3 form-group">
+        <label for="email" class="form-label">Email</label>
+        <p *ngIf="loginForm.controls['email']?.invalid && (loginForm.controls['email']?.touched || mouseOver)" 
+        class="error-message">Required</p>
+        <input type="email" (ngModel)="email" name="email" class="form-control" id="email" required>
+    </div>
+    <div class="mb-3 form-group">
+        <label for="password" class="form-label">Password</label>
+        <p *ngIf="loginForm.controls['password']?.invalid && (loginForm.controls['password']?.touched || mouseOver)"
+         class="error-message">Required</p>
+        <input type="password" [(ngModel)]="password" name="password" class="form-control" id="password" required>
+    </div>
+    <span>
+    <span (mouseover)="mouseOver=true" (mouseleave)="mouseOver=false">
+        <button type="submit" class="btn btn-primary mb-3" 
+        [disabled]="loginForm.invalid">Log In</button>
+    </span>
+    <button class="btn btn-warning mb-3 new-account" routerLink="/newaccount">Don't have an account? Create one here!</button>
+    </span>
+    <div class="alert alert-danger" role="alert" *ngIf="accountError">
+        The account that you entered doesn't seem to exist. Either check your spelling or create an account!
+    </div>
+</form>

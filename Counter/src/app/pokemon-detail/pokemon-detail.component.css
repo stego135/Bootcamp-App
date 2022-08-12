@@ -21,9 +21,10 @@
     width: 70px;
     background: linear-gradient(-180deg, #f00000 50%, #f0f0f0 50%);
     border-radius: 50%;
+    margin-bottom: 50px;
 }
 .count,.image {
-    padding: 20px;
+    padding: 40px;
 }
 .counter-add:hover {
     background-color: #f00000;
@@ -36,10 +37,25 @@
     border-radius: 10px;
 }
 .back-container {
-    margin-top: 70px;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+.delete {
+    background-color: #f00000;
+    color: white;
+    border-radius: 10px;
+}
+.delete-container {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
 }
 img {
     width: 100%;
     max-width: 512px;
     display: inline-block;
+}
+.count {
+    position: relative;
 }

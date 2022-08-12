@@ -1,0 +1,46 @@
+h2 {
+    text-align: center;
+}
+.intro-container {
+    background-color: #FAFAFA;
+    border-radius: 25px;
+    box-shadow: 5px 10px #888888;
+    margin: 40px;
+}
+.bottom-buttons {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    width: 480px;
+    margin-left: -240px;
+    display: flex;
+    justify-content: center;
+}
+.intro {
+    position: relative;
+}
+.left-button {
+    margin-right: 10px;
+}
+.right-button {
+    margin-left: 10px;
+}
+p {
+    margin: 20px 20px 0px 10px;
+}
+@media only screen and (max-width: 992px) {
+    .intro {
+        min-height: 400px;
+    }
+    img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+@media only screen and (max-width: 600px) {
+    .bottom-buttons {
+        width: 240px;
+        margin-left: -120px;
+    }
+}

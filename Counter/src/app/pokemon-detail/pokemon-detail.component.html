@@ -4,9 +4,22 @@
         <input id="count-form" [(ngModel)]="pokemon.count" placeholder="count"/>
         <button type="button" class="counter-add" (click)="add()">Add</button>
         <p class="hall-of-fame-text">Finally encountered that shiny? Add it to the Hall of Fame!</p>
-        <button type="button" class="hall-of-fame-add" (click)="addToHall()" [disabled]="!redirect">Hall of Fame</button>
+        <button type="button" class="hall-of-fame-add" (click)="warning(false)" [disabled]="!redirect">Hall of Fame</button>
         <div class="back-container">
             <button type="button" class="go-back" (click)="goBack()">Go Back</button>
+        </div>
+        <div class="delete-container">
+            <button type="button" class="delete" (click)="warning(true)">Delete Pokémon</button>
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="isDelete">
+            Are you sure you want to delete this Pokémon?
+            <button type="button" class="btn btn-dark" (click)="delete()">Yes</button>
+            <button type="button" class="btn btn-danger" (click)="clear(true)">No</button>
+        </div>
+        <div class="alert alert-primary" role="alert" *ngIf="isHall">
+            Are you sure you want to add this Pokémon to the Hall of Fame?
+            <button type="button" class="btn btn-dark" (click)="addToHall()" [disabled]="!redirect">Yes</button>
+            <button type="button" class="btn btn-primary" (click)="clear(false)">No</button>
         </div>
     </div>
     <div class="col-md-6 order-md-1 image">

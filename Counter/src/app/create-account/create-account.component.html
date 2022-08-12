@@ -1,0 +1,27 @@
+<div>
+    <h2>Create Account</h2>
+</div>
+<form class="row g-3 log-form" (ngSubmit)="onSubmit(accountForm.value)" #accountForm="ngForm">
+    <div class="mb-3 form-group">
+        <label for="email" class="form-label">Email</label>
+        <p *ngIf="accountForm.controls['email']?.invalid && (accountForm.controls['email']?.touched || mouseOver)" 
+        class="error-message">Required</p>
+        <input type="email" (ngModel)="email" name="email" class="form-control" id="email" required>
+    </div>
+    <div class="mb-3 form-group">
+        <label for="password" class="form-label">Password</label>
+        <p *ngIf="accountForm.controls['password']?.invalid && (accountForm.controls['password']?.touched || mouseOver)"
+         class="error-message">Required</p>
+        <input type="password" [(ngModel)]="password" name="password" class="form-control" id="password" required>
+    </div>
+    <span>
+    <span (mouseover)="mouseOver=true" (mouseleave)="mouseOver=false">
+        <button type="submit" class="btn btn-primary mb-3" 
+        [disabled]="accountForm.invalid">Create Account</button>
+    </span>
+    </span>
+    <div class="alert alert-danger" role="alert" *ngIf="dupError">
+        The account that you entered already exists. Try logging in instead!
+    </div>
+    <button class="btn btn-primary redirect" *ngIf="dupError" routerLink="/login">Log in</button>
+</form>
