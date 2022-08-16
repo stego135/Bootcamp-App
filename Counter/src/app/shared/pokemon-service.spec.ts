@@ -14,6 +14,7 @@ describe('PokemonService', () => {
       return of(1);
     }
   };
+  userServiceStub.id = of(1);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -77,6 +78,48 @@ describe('PokemonService', () => {
       expect(req.request.method).toBe('GET');
 
       req.flush(testData);
+    }),
+
+    it('should return different pokemon depending on userId', () => {
+      //does not work, getId returns a value of 1
+      userServiceStub = {
+        getId() {
+          return of(2);
+        }
+      }
+
+      const testData = [{id: 4, name: "Liepard", count: 1234, userId: 2},
+      {id: 5, name: "Naganadel", count: 2845, userId: 2}];
+
+      service.getPokemon().subscribe(data => {
+        expect(data).toEqual(testData);
+        expect(data.length).toBe(2);
+      });
+
+      const req = mockHttp.expectOne('api/pokemon');
+      expect(req.request.url).toEqual('api/pokemon');
+      expect(req.request.method).toBe('GET');
+
+      req.flush(testData);
+    })
+  })
+
+  describe('getOnePokemon', () => {
+
+    it('should retrieve correct pokemon', () => {
+      const testPokemon = {id: 3, name: "Mew", count: 5025, userId: 1};
+      const id = 3;
+      const testUrl = `api/pokemon/${id}`
+
+      service.getOnePokemon(id).subscribe(data => {
+        expect(data).toEqual(testPokemon);
+      });
+
+      const req = mockHttp.expectOne('api/pokemon/3');
+      expect(req.request.url).toEqual(testUrl);
+      expect(req.request.method).toBe('GET');
+
+      req.flush(testPokemon);
     })
   })
 });
