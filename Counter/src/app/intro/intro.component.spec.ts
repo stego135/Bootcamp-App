@@ -28,4 +28,15 @@ describe('IntroComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('bottom buttons', () => {
+
+    it('should display the correct buttons', () => {
+      const compiled = fixture.nativeElement as HTMLElement;
+      expect(compiled.querySelector('.left-button')?.textContent).toContain('ongoing');
+      expect(compiled.querySelector('.right-button')?.textContent).toContain('list');
+      expect(compiled.querySelector('.left-button')?.textContent).not.toContain('started')
+      expect(compiled.querySelector('.right-button')?.textContent).not.toContain('Log in');
+    })
+  })
 });
