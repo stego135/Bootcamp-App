@@ -3,18 +3,18 @@ import { Pokemon } from "./pokemon";
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { UserService } from "./user-service";
-import { Observable, of } from "rxjs";
+import { map, Observable, of, mergeMap, BehaviorSubject, take } from "rxjs";
 
 describe('PokemonService', () => {
   let service: PokemonService;
   
   let mockHttp: HttpTestingController;
+
   let userServiceStub: Partial<UserService> = {
     getId(): Observable<number> {
       return of(1);
     }
   };
-  userServiceStub.id = of(1);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -80,27 +80,46 @@ describe('PokemonService', () => {
       req.flush(testData);
     }),
 
-    it('should return different pokemon depending on userId', () => {
-      //does not work, getId returns a value of 1
-      userServiceStub = {
-        getId() {
-          return of(2);
-        }
-      }
-
-      const testData = [{id: 4, name: "Liepard", count: 1234, userId: 2},
+    describe('should return different pokemon depending on userId', () => {
+      let idStream = new BehaviorSubject(0);
+      const testData = [{id: 1, name: "Venusaur", count: 400, userId: 1},
+      {id: 2, name: "Oshawott", count: 24, userId: 1},
+      {id: 3, name: "Mew", count: 5025, userId: 1},
+      {id: 4, name: "Liepard", count: 1234, userId: 2},
       {id: 5, name: "Naganadel", count: 2845, userId: 2}];
+      const returnData2 = [{id: 4, name: "Liepard", count: 1234, userId: 2},
+      {id: 5, name: "Naganadel", count: 2845, userId: 2}];
+      const returnData1 = [{id: 1, name: "Venusaur", count: 400, userId: 1},
+      {id: 2, name: "Oshawott", count: 24, userId: 1},
+      {id: 3, name: "Mew", count: 5025, userId: 1}];
 
-      service.getPokemon().subscribe(data => {
-        expect(data).toEqual(testData);
-        expect(data.length).toBe(2);
-      });
+      let httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
+      httpClientSpy.get.and.returnValue(of(testData));
+      let userServiceSpy = jasmine.createSpyObj('UserService', ['getId']);
+      userServiceSpy.getId.and.returnValue(idStream.asObservable());
+      let newService = new PokemonService(httpClientSpy, userServiceSpy);
 
-      const req = mockHttp.expectOne('api/pokemon');
-      expect(req.request.url).toEqual('api/pokemon');
-      expect(req.request.method).toBe('GET');
+      it('should return certain values for userid 1', () => {
+        idStream.next(1);
+        newService.getPokemon().pipe(
+          take(1),
+          map(result => {
+            expect(result).toEqual(returnData1);
+            expect(result.length).toBe(3);
+          })
+        ).subscribe()
+      })
 
-      req.flush(testData);
+      it('should return certain values for userId 2', () => {
+        idStream.next(2);
+        newService.getPokemon().pipe(
+          take(1),
+          map(result => {
+            expect(result).toEqual(returnData2);
+            expect(result.length).toBe(2);
+          })
+        ).subscribe();
+      })
     })
   })
 
@@ -120,6 +139,128 @@ describe('PokemonService', () => {
       expect(req.request.method).toBe('GET');
 
       req.flush(testPokemon);
+    }),
+
+    it('should return empty object for invalid id', () => {
+      const wrongId = 0;
+
+      service.getOnePokemon(wrongId).subscribe(data => {
+        expect(data).toBeNull();
+      })
+
+      const req = mockHttp.expectOne('api/pokemon/0');
+
+      req.flush(null);
+    })
+  })
+
+  describe('deletePokemon', () => {
+    it('should remove pokemon from the list', () => {
+      const id = 1;
+      const testData = [{id: 2, name: "Oshawott", count: 24, userId: 1},
+      {id: 3, name: "Mew", count: 5025, userId: 1}];
+
+      service.removePokemon(id).pipe(
+        mergeMap((result: Pokemon) => {
+          expect(result).toBeNull();
+          return service.getPokemon();
+        }),
+        map((pokemonList: Pokemon[]) => {
+          expect(pokemonList.length).toBe(2);
+          return pokemonList;
+        })
+      ).subscribe();
+
+      const req = mockHttp.expectOne('api/pokemon/1');
+      expect(req.request.method).toBe('DELETE');
+
+      req.flush(null);
+
+      const req2 = mockHttp.expectOne('api/pokemon');
+      req2.flush(testData)
+    }),
+
+    it('should not delete anything with an incorrect id', () => {
+      const id = 0;
+      const testData = [{id: 1, name: "Venusaur", count: 400, userId: 1},
+      {id: 2, name: "Oshawott", count: 24, userId: 1},
+      {id: 3, name: "Mew", count: 5025, userId: 1}];
+
+      service.removePokemon(id).pipe(
+        mergeMap((result: Pokemon) => {
+          expect(result).toBeNull();
+          return service.getPokemon();
+        }),
+        map((pokemonList: Pokemon[]) => {
+          expect(pokemonList.length).toEqual(3);
+          return pokemonList;
+        })
+      ).subscribe();
+
+      const req = mockHttp.expectOne('api/pokemon/0');
+      expect(req.request.method).toBe('DELETE');
+      req.flush(null);
+
+      const req2 = mockHttp.expectOne('api/pokemon');
+      req2.flush(testData)
+
+    })
+  })
+
+  describe('addPokemon', () => {
+
+    it('should add a Pokemon to the list', () => {
+      const newPokemon = {id: 6, name: "Mewtwo", count: 50, userId: 1};
+      const testData = [{id: 1, name: "Venusaur", count: 400, userId: 1},
+      {id: 2, name: "Oshawott", count: 24, userId: 1},
+      {id: 3, name: "Mew", count: 5025, userId: 1},
+      {id: 6, name: "Mewtwo", count: 50, userId: 1}];
+
+      service.addPokemon(newPokemon).pipe(
+        mergeMap((result: Pokemon) => {
+          expect(result).toEqual(newPokemon);
+          return service.getPokemon();
+        }),
+        map((pokemonList: Pokemon[]) => {
+          expect(pokemonList.length).toEqual(4);
+          return pokemonList;
+        })
+      ).subscribe();
+
+      const req = mockHttp.expectOne('api/pokemon');
+      expect(req.request.method).toBe('POST');
+      req.flush(newPokemon);
+
+      const req2 = mockHttp.expectOne('api/pokemon');
+      req2.flush(testData);
+    })
+  })
+
+  describe('updatePokemon', () => {
+
+    it('should correctly update Pokemon', () => {
+      const pokemon = {id: 1, name: "Venusaur", count: 450, userId: 1};
+      const testData = [{id: 1, name: "Venusaur", count: 450, userId: 1},
+      {id: 2, name: "Oshawott", count: 24, userId: 1},
+      {id: 3, name: "Mew", count: 5025, userId: 1}];
+      
+      service.updatePokemon(pokemon).pipe(
+        mergeMap((result: Pokemon) => {
+          expect(result).toEqual(pokemon);
+          return service.getPokemon();
+        }),
+        map((pokemonList: Pokemon[]) => {
+          expect(pokemonList.length).toEqual(3);
+          return pokemonList;
+        })
+      ).subscribe()
+
+      const req = mockHttp.expectOne('api/pokemon');
+      expect(req.request.method).toBe('PUT');
+      req.flush({id: 1, name: "Venusaur", count: 450, userId: 1});
+
+      const req2 = mockHttp.expectOne('api/pokemon');
+      req2.flush(testData);
     })
   })
 });
