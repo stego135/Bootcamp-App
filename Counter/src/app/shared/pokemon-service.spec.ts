@@ -262,5 +262,49 @@ describe('PokemonService', () => {
       const req2 = mockHttp.expectOne('api/pokemon');
       req2.flush(testData);
     })
+  }),
+
+  describe('filterPokemon', () => {
+
+    it('should return an array of Pokemon with names that include the search term', () => {
+      let searchTerm = "a";
+      const testData = [{id: 1, name: "Venusaur", count: 450, userId: 1},
+      {id: 2, name: "Oshawott", count: 24, userId: 1},
+      {id: 3, name: "Mew", count: 5025, userId: 1}];
+      const returnData = [{id: 1, name: "Venusaur", count: 450, userId: 1},
+      {id: 2, name: "Oshawott", count: 24, userId: 1}];
+
+      service.filterPokemon(searchTerm, 1).pipe(
+        take(1),
+        map(result => {
+          expect(result).toEqual(returnData);
+          expect(result.length).toEqual(2);
+        })
+      ).subscribe();
+
+      const req = mockHttp.expectOne('api/pokemon');
+      expect(req.request.method).toBe('GET');
+      req.flush(testData);
+    }),
+
+    it('should return an empty array if no Pokemon match', () => {
+      let searchTerm = "noMatching";
+      const testData = [{id: 1, name: "Venusaur", count: 450, userId: 1},
+      {id: 2, name: "Oshawott", count: 24, userId: 1},
+      {id: 3, name: "Mew", count: 5025, userId: 1}];
+
+      service.filterPokemon(searchTerm, 1).pipe(
+        take(1),
+        map(result => {
+          expect(result.length).toEqual(0);
+        })
+      ).subscribe();
+
+      const req = mockHttp.expectOne('api/pokemon');
+      expect(req.request.method).toBe('GET');
+      req.flush(testData);
+    })
   })
+
+  
 });
