@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { UserService } from '../shared/user-service';
 
 import { IntroComponent } from './intro.component';
@@ -12,11 +12,14 @@ describe('IntroComponent', () => {
       return of(true);
     }
   };
+  let userSpy = jasmine.createSpyObj('UserService', ['getLogIn']);
+  let isLoggedInStream = new BehaviorSubject(true);
+  userSpy.getLogIn.and.returnValue(isLoggedInStream.asObservable());
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ IntroComponent ],
-      providers: [ { provide: UserService, useValue: userServiceStub } ]
+      providers: [ { provide: UserService, useValue: userSpy } ]
     })
     .compileComponents();
 
@@ -31,12 +34,26 @@ describe('IntroComponent', () => {
 
   describe('bottom buttons', () => {
 
-    it('should display the correct buttons', () => {
+    it('should display the correct buttons when logged in', () => {
+      isLoggedInStream.next(true);
+      fixture.detectChanges();
+
       const compiled = fixture.nativeElement as HTMLElement;
       expect(compiled.querySelector('.left-button')?.textContent).toContain('ongoing');
       expect(compiled.querySelector('.right-button')?.textContent).toContain('list');
       expect(compiled.querySelector('.left-button')?.textContent).not.toContain('started')
       expect(compiled.querySelector('.right-button')?.textContent).not.toContain('Log in');
+    })
+
+    it('should display the correct buttons when logged out', () => {
+      isLoggedInStream.next(false);
+      fixture.detectChanges();
+
+      const compiled = fixture.nativeElement as HTMLElement;
+      expect(compiled.querySelector('.left-button')?.textContent).toContain('started');
+      expect(compiled.querySelector('.right-button')?.textContent).toContain('Log in');
+      expect(compiled.querySelector('.left-button')?.textContent).not.toContain('ongoing')
+      expect(compiled.querySelector('.right-button')?.textContent).not.toContain('list');
     })
   })
 });
