@@ -185,10 +185,6 @@ describe('PokemonService', () => {
 
     it('should add a Pokemon to the list', () => {
       const newPokemon = {id: 6, name: "Mewtwo", count: 50, userId: 1};
-      const testData = [{id: 1, name: "Venusaur", count: 400, userId: 1},
-      {id: 2, name: "Oshawott", count: 24, userId: 1},
-      {id: 3, name: "Mew", count: 5025, userId: 1},
-      {id: 6, name: "Mewtwo", count: 50, userId: 1}];
 
       service.addPokemon(newPokemon).subscribe(result => {
         expect(result).toEqual(newPokemon);
