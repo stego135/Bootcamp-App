@@ -157,53 +157,27 @@ describe('PokemonService', () => {
   describe('deletePokemon', () => {
     it('should remove pokemon from the list', () => {
       const id = 1;
-      const testData = [{id: 2, name: "Oshawott", count: 24, userId: 1},
-      {id: 3, name: "Mew", count: 5025, userId: 1}];
 
-      service.removePokemon(id).pipe(
-        mergeMap((result: Pokemon) => {
-          expect(result).toBeNull();
-          return service.getPokemon();
-        }),
-        map((pokemonList: Pokemon[]) => {
-          expect(pokemonList.length).toBe(2);
-          return pokemonList;
-        })
-      ).subscribe();
+      service.removePokemon(id).subscribe(result => {
+        expect(result).toBeNull();
+      });
 
       const req = mockHttp.expectOne('api/pokemon/1');
       expect(req.request.method).toBe('DELETE');
 
       req.flush(null);
-
-      const req2 = mockHttp.expectOne('api/pokemon');
-      req2.flush(testData)
     }),
 
     it('should not delete anything with an incorrect id', () => {
       const id = 0;
-      const testData = [{id: 1, name: "Venusaur", count: 400, userId: 1},
-      {id: 2, name: "Oshawott", count: 24, userId: 1},
-      {id: 3, name: "Mew", count: 5025, userId: 1}];
 
-      service.removePokemon(id).pipe(
-        mergeMap((result: Pokemon) => {
-          expect(result).toBeNull();
-          return service.getPokemon();
-        }),
-        map((pokemonList: Pokemon[]) => {
-          expect(pokemonList.length).toEqual(3);
-          return pokemonList;
-        })
-      ).subscribe();
+      service.removePokemon(id).subscribe(result => {
+        expect(result).toBeNull();
+      });
 
       const req = mockHttp.expectOne('api/pokemon/0');
       expect(req.request.method).toBe('DELETE');
       req.flush(null);
-
-      const req2 = mockHttp.expectOne('api/pokemon');
-      req2.flush(testData)
-
     })
   })
 
@@ -216,23 +190,13 @@ describe('PokemonService', () => {
       {id: 3, name: "Mew", count: 5025, userId: 1},
       {id: 6, name: "Mewtwo", count: 50, userId: 1}];
 
-      service.addPokemon(newPokemon).pipe(
-        mergeMap((result: Pokemon) => {
-          expect(result).toEqual(newPokemon);
-          return service.getPokemon();
-        }),
-        map((pokemonList: Pokemon[]) => {
-          expect(pokemonList.length).toEqual(4);
-          return pokemonList;
-        })
-      ).subscribe();
+      service.addPokemon(newPokemon).subscribe(result => {
+        expect(result).toEqual(newPokemon);
+      });
 
       const req = mockHttp.expectOne('api/pokemon');
       expect(req.request.method).toBe('POST');
       req.flush(newPokemon);
-
-      const req2 = mockHttp.expectOne('api/pokemon');
-      req2.flush(testData);
     })
   })
 
@@ -240,27 +204,14 @@ describe('PokemonService', () => {
 
     it('should correctly update Pokemon', () => {
       const pokemon = {id: 1, name: "Venusaur", count: 450, userId: 1};
-      const testData = [{id: 1, name: "Venusaur", count: 450, userId: 1},
-      {id: 2, name: "Oshawott", count: 24, userId: 1},
-      {id: 3, name: "Mew", count: 5025, userId: 1}];
-      
-      service.updatePokemon(pokemon).pipe(
-        mergeMap((result: Pokemon) => {
-          expect(result).toEqual(pokemon);
-          return service.getPokemon();
-        }),
-        map((pokemonList: Pokemon[]) => {
-          expect(pokemonList.length).toEqual(3);
-          return pokemonList;
-        })
-      ).subscribe()
+
+      service.updatePokemon(pokemon).subscribe(result => {
+        expect(result).toEqual(pokemon);
+      });
 
       const req = mockHttp.expectOne('api/pokemon');
       expect(req.request.method).toBe('PUT');
       req.flush({id: 1, name: "Venusaur", count: 450, userId: 1});
-
-      const req2 = mockHttp.expectOne('api/pokemon');
-      req2.flush(testData);
     })
   }),
 
@@ -306,5 +257,38 @@ describe('PokemonService', () => {
     })
   })
 
-  
+  describe("filterStreams", () => {
+
+    it('should return the proper search term', () => {
+      service.changeTerm('');
+
+      service.getSearchTerm().pipe(
+        take(1),
+        map(result => {
+          expect(result).toBe('');
+        })
+      ).subscribe();
+    }),
+
+    it('should change the search term correctly', () => {
+      service.changeTerm("Bulbasaur");
+
+      service.getSearchTerm().pipe(
+        take(1),
+        map(result => {
+          expect(result).toBe('Bulbasaur');
+        })
+      ).subscribe();
+    }),
+
+    it('should return if the list is filtered or not', () => {
+      service.changeTerm('');
+
+      service.isFiltered().pipe(
+        take(1),
+      ).subscribe(result => {
+        expect(result).toBeFalse();
+      })
+    })
+  })
 });
