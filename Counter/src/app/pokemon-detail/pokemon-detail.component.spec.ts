@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { HallOfFameService } from '../shared/hall-of-fame-service';
@@ -47,6 +48,7 @@ describe('PokemonDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [ FormsModule ],
       declarations: [ PokemonDetailComponent ],
       providers: [ { provide: PokemonService, useValue: pokemonServiceStub },
         { provide: UserService, useValue: userServiceStub },

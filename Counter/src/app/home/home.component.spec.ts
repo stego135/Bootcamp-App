@@ -1,5 +1,7 @@
+import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Observable, of } from 'rxjs';
 import { Pokemon } from '../shared/pokemon';
 import { PokemonService } from '../shared/pokemon-service';
@@ -32,10 +34,10 @@ describe('HomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HomeComponent ],
+      declarations: [ HomeComponent, ThumbnailStubComponent ],
       providers: [ { provide: PokemonService, useValue: pokemonServiceStub },
-        { provide: UserService, useValue: userServiceStub },
-        { provide: Router, useValue: routerSpy } ]
+        { provide: UserService, useValue: userServiceStub } ],
+      imports: [ RouterTestingModule ]
     })
     .compileComponents();
 
@@ -48,3 +50,10 @@ describe('HomeComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+
+@Component({selector: 'app-pokemon-thumbnail', template: ''})
+class ThumbnailStubComponent {
+  @Input()
+  public pokemon!: Pokemon;
+}

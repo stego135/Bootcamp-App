@@ -1,3 +1,4 @@
+import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
@@ -26,7 +27,7 @@ describe('HallOfFameComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HallOfFameComponent ],
+      declarations: [ HallOfFameComponent, ThumbnailStubComponent ],
       providers: [ { provide: HallOfFameService, useValue: hallServiceStub },
         { provide: UserService, useValue: userServiceStub },
         { provide: Router, useValue: routerSpy } ]
@@ -42,3 +43,9 @@ describe('HallOfFameComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+@Component({selector: 'app-pokemon-thumbnail', template: ''})
+class ThumbnailStubComponent {
+  @Input()
+  public pokemon!: Pokemon;
+}
