@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { UserService } from '../shared/user-service';
 
 import { IntroComponent } from './intro.component';
@@ -7,11 +7,6 @@ import { IntroComponent } from './intro.component';
 describe('IntroComponent', () => {
   let component: IntroComponent;
   let fixture: ComponentFixture<IntroComponent>;
-  let userServiceStub: Partial<UserService> = {
-    getLogIn(): Observable<boolean> {
-      return of(true);
-    }
-  };
   let userSpy = jasmine.createSpyObj('UserService', ['getLogIn']);
   let isLoggedInStream = new BehaviorSubject(true);
   userSpy.getLogIn.and.returnValue(isLoggedInStream.asObservable());

@@ -2,6 +2,7 @@ import { UserService } from "./user-service";
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { map, take } from "rxjs";
+import { User } from "./user";
 
 describe('UserService', () => {
   let service: UserService;
@@ -24,7 +25,7 @@ describe('UserService', () => {
     it('should retrieve the current users', () => {
       const testData = [{id: 1, email: "test@test.com", password: "test"}];
 
-      service.getUsers().subscribe(result => {
+      service.getUsers().subscribe((result: User[]) => {
           expect(result).toEqual(testData);
           expect(result.length).toBe(1);
       });
@@ -43,7 +44,7 @@ describe('UserService', () => {
       const id = 1;
       const testUrl = `api/user/${id}`
 
-      service.getUser(id).subscribe(result => {
+      service.getUser(id).subscribe((result: User) => {
         expect(result).toEqual(testUser);
       });
 
@@ -57,7 +58,7 @@ describe('UserService', () => {
     it('should return empty object for invalid id', () => {
       const wrongId = 0;
 
-      service.getUser(wrongId).subscribe(data => {
+      service.getUser(wrongId).subscribe((data: User) => {
         expect(data).toBeNull();
       })
 
@@ -73,7 +74,7 @@ describe('UserService', () => {
       {id: 2, email: "testing@test.com", password: "test"}];
       const testUser = [{id: 1, email: "test@test.com", password: "test"}];
 
-      service.checkAccount("test@test.com", "test").subscribe(result => {
+      service.checkAccount("test@test.com", "test").subscribe((result: User[]) => {
         expect(result).toEqual(testUser);
         expect(result.length).toBe(1);
       });
@@ -89,7 +90,7 @@ describe('UserService', () => {
       const testData = [{id: 1, email: "test@test.com", password: "test"},
       {id: 2, email: "testing@test.com", password: "test"}];
 
-      service.checkAccount("test@test.com", "a").subscribe(result => {
+      service.checkAccount("test@test.com", "a").subscribe((result: User[]) => {
         expect(result).toEqual([]);
         expect(result.length).toBe(0);
       });
@@ -108,7 +109,7 @@ describe('UserService', () => {
       {id: 2, email: "testing@test.com", password: "test"}];
       const testUser = [{id: 1, email: "test@test.com", password: "test"}];
 
-      service.checkEmail("test@test.com").subscribe(result => {
+      service.checkEmail("test@test.com").subscribe((result: User[]) => {
         expect(result).toEqual(testUser);
         expect(result.length).toBe(1);
       });
@@ -124,7 +125,7 @@ describe('UserService', () => {
       const testData = [{id: 1, email: "test@test.com", password: "test"},
       {id: 2, email: "testing@test.com", password: "test"}];
 
-      service.checkEmail("wow@test.com").subscribe(result => {
+      service.checkEmail("wow@test.com").subscribe((result: User[]) => {
         expect(result).toEqual([]);
         expect(result.length).toBe(0);
       });
@@ -143,7 +144,7 @@ describe('UserService', () => {
       const testData = [{id: 1, email: "test@test.com", password: "test"},
       {id: 2, email: "testing@test.com", password: "test"}];
 
-      service.createAccount(newUser).subscribe(result => {
+      service.createAccount(newUser).subscribe((result: User) => {
         expect(result).toEqual(newUser);
       });
 
@@ -158,14 +159,14 @@ describe('UserService', () => {
       service.logIn(1);
       service.getId().pipe(
         take(1),
-        map(data => {
+        map((data: number) => {
           expect(data).toBe(1);
         })
       ).subscribe();
 
       service.getLogIn().pipe(
         take(1),
-        map(data => {
+        map((data: boolean) => {
           expect(data).toBeTrue();
         })
       ).subscribe();
@@ -177,14 +178,14 @@ describe('UserService', () => {
       service.logOut();
       service.getId().pipe(
         take(1),
-        map(data => {
+        map((data: number) => {
           expect(data).toBe(0);
         })
       ).subscribe();
 
       service.getLogIn().pipe(
         take(1),
-        map(data => {
+        map((data: boolean) => {
           expect(data).toBeFalse();
         })
       ).subscribe();

@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
-import { Pokemon } from '../shared/pokemon';
 import { PokemonService } from '../shared/pokemon-service';
 
 import { PokemonThumbnailComponent } from './pokemon-thumbnail.component';
@@ -32,13 +31,13 @@ describe('PokemonThumbnailComponent', () => {
   });
 
   describe('Correct display', () => {
-    it('should display the correct Pokemon name and count', () => {
+    it('should display the correct Pokemon name', () => {
       let pokeName = fixture.debugElement.nativeElement.querySelector('.pokemon-name');
 
       expect(pokeName.textContent).toEqual("Mewtwo");
     }),
 
-    it('should display the correct image', () => {
+    it('should display the correct count', () => {
       let pokeCount = fixture.debugElement.nativeElement.querySelector('.pokemon-count');
 
       expect(pokeCount.textContent).toEqual("Count: 50");

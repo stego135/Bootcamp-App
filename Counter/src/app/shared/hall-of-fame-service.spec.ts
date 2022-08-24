@@ -36,7 +36,7 @@ describe('HallOfFameService', () => {
       {id: 3, name: "Cresselia", count: 3629, userId: 1},
       {id: 4, name: "Axew", count: 497, userId: 1}];
 
-      service.getShiny().subscribe(result => {
+      service.getShiny().subscribe((result: Pokemon[]) => {
         expect(result).toEqual(testData);
         expect(result.length).toBe(4);
       })
@@ -77,7 +77,7 @@ describe('HallOfFameService', () => {
         idStream.next(1);
         newService.getShiny().pipe(
           take(1),
-          map(result => {
+          map((result: Pokemon[]) => {
             expect(result).toEqual(returnData1);
             expect(result.length).toBe(4);
           })
@@ -88,7 +88,7 @@ describe('HallOfFameService', () => {
         idStream.next(2);
         newService.getShiny().pipe(
           take(1),
-          map(result => {
+          map((result: Pokemon[]) => {
             expect(result).toEqual(returnData2);
             expect(result.length).toBe(4);
           })
@@ -108,7 +108,7 @@ describe('HallOfFameService', () => {
         {id: 7, name: "Yungoos", count: 87, userId: 2},
         {id: 8, name: "Latios", count: 635, userId: 2}];
 
-        service.addPokemon(newPokemon).subscribe(result => {
+        service.addPokemon(newPokemon).subscribe((result: Pokemon) => {
           expect(result).toEqual(newPokemon);
         });
   
@@ -127,21 +127,21 @@ describe('HallOfFameService', () => {
         service.changePhrase("time");
         service.sortedBy.pipe(
           take(1),
-          map(result => {
+          map((result: string) => {
             expect(result).toBe("time");
           })
         ).subscribe();
         service.changePhrase("asc");
         service.sortedBy.pipe(
           take(1),
-          map(result => {
+          map((result: string) => {
             expect(result).toBe("asc");
           })
         ).subscribe();
         service.changePhrase("desc");
         service.sortedBy.pipe(
           take(1),
-          map(result => {
+          map((result: string) => {
             expect(result).toBe("desc");
           })
         ).subscribe();

@@ -3,7 +3,7 @@ import { Pokemon } from "./pokemon";
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { UserService } from "./user-service";
-import { map, Observable, of, mergeMap, BehaviorSubject, take } from "rxjs";
+import { map, Observable, of, BehaviorSubject, take } from "rxjs";
 
 describe('PokemonService', () => {
   let service: PokemonService;
@@ -68,7 +68,7 @@ describe('PokemonService', () => {
       {id: 2, name: "Oshawott", count: 24, userId: 1},
       {id: 3, name: "Mew", count: 5025, userId: 1}];
 
-      service.getPokemon().subscribe(data => {
+      service.getPokemon().subscribe((data: Pokemon[]) => {
         expect(data).toEqual(testData);
         expect(data.length).toBe(3);
       });
@@ -103,7 +103,7 @@ describe('PokemonService', () => {
         idStream.next(1);
         newService.getPokemon().pipe(
           take(1),
-          map(result => {
+          map((result: Pokemon[]) => {
             expect(result).toEqual(returnData1);
             expect(result.length).toBe(3);
           })
@@ -114,7 +114,7 @@ describe('PokemonService', () => {
         idStream.next(2);
         newService.getPokemon().pipe(
           take(1),
-          map(result => {
+          map((result: Pokemon[]) => {
             expect(result).toEqual(returnData2);
             expect(result.length).toBe(2);
           })
@@ -130,7 +130,7 @@ describe('PokemonService', () => {
       const id = 3;
       const testUrl = `api/pokemon/${id}`
 
-      service.getOnePokemon(id).subscribe(data => {
+      service.getOnePokemon(id).subscribe((data: Pokemon) => {
         expect(data).toEqual(testPokemon);
       });
 
@@ -144,7 +144,7 @@ describe('PokemonService', () => {
     it('should return empty object for invalid id', () => {
       const wrongId = 0;
 
-      service.getOnePokemon(wrongId).subscribe(data => {
+      service.getOnePokemon(wrongId).subscribe((data: Pokemon) => {
         expect(data).toBeNull();
       })
 
@@ -158,7 +158,7 @@ describe('PokemonService', () => {
     it('should remove pokemon from the list', () => {
       const id = 1;
 
-      service.removePokemon(id).subscribe(result => {
+      service.removePokemon(id).subscribe((result: Pokemon) => {
         expect(result).toBeNull();
       });
 
@@ -171,7 +171,7 @@ describe('PokemonService', () => {
     it('should not delete anything with an incorrect id', () => {
       const id = 0;
 
-      service.removePokemon(id).subscribe(result => {
+      service.removePokemon(id).subscribe((result: Pokemon) => {
         expect(result).toBeNull();
       });
 
@@ -186,7 +186,7 @@ describe('PokemonService', () => {
     it('should add a Pokemon to the list', () => {
       const newPokemon = {id: 6, name: "Mewtwo", count: 50, userId: 1};
 
-      service.addPokemon(newPokemon).subscribe(result => {
+      service.addPokemon(newPokemon).subscribe((result: Pokemon) => {
         expect(result).toEqual(newPokemon);
       });
 
@@ -201,7 +201,7 @@ describe('PokemonService', () => {
     it('should correctly update Pokemon', () => {
       const pokemon = {id: 1, name: "Venusaur", count: 450, userId: 1};
 
-      service.updatePokemon(pokemon).subscribe(result => {
+      service.updatePokemon(pokemon).subscribe((result: Pokemon) => {
         expect(result).toEqual(pokemon);
       });
 
@@ -223,7 +223,7 @@ describe('PokemonService', () => {
 
       service.filterPokemon(searchTerm, 1).pipe(
         take(1),
-        map(result => {
+        map((result: Pokemon[]) => {
           expect(result).toEqual(returnData);
           expect(result.length).toEqual(2);
         })
@@ -242,7 +242,7 @@ describe('PokemonService', () => {
 
       service.filterPokemon(searchTerm, 1).pipe(
         take(1),
-        map(result => {
+        map((result: Pokemon[]) => {
           expect(result.length).toEqual(0);
         })
       ).subscribe();
@@ -260,7 +260,7 @@ describe('PokemonService', () => {
 
       service.getSearchTerm().pipe(
         take(1),
-        map(result => {
+        map((result: string) => {
           expect(result).toBe('');
         })
       ).subscribe();
@@ -271,7 +271,7 @@ describe('PokemonService', () => {
 
       service.getSearchTerm().pipe(
         take(1),
-        map(result => {
+        map((result: string) => {
           expect(result).toBe('Bulbasaur');
         })
       ).subscribe();
@@ -282,7 +282,7 @@ describe('PokemonService', () => {
 
       service.isFiltered().pipe(
         take(1),
-      ).subscribe(result => {
+      ).subscribe((result: boolean) => {
         expect(result).toBeFalse();
       })
     })

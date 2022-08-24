@@ -1,7 +1,7 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { PokemonService } from '../shared/pokemon-service';
 import { UserService } from '../shared/user-service';
 
