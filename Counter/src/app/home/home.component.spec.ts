@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -13,19 +13,6 @@ import { HomeComponent } from './home.component';
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
-  let pokemonServiceStub: Partial<PokemonService> = {
-    isFiltered(): Observable<boolean> {
-      return of(false);
-    },
-    getSearchTerm(): Observable<string> {
-      return of("");
-    },
-    changeTerm(term: string) {},
-    getPokemon(): Observable<Pokemon[]> {
-      return of([{id: 1, name: "Venusaur", count: 400, userId: 1},
-      {id: 2, name: "Oshawott", count: 24, userId: 1}]);
-    }
-  };
   let loggedIn = new BehaviorSubject(true);
   let userServiceStub: Partial<UserService> = {
     getLogIn(): Observable<boolean> {
@@ -34,8 +21,6 @@ describe('HomeComponent', () => {
   };
   let router: Router;
   let pokemonSpy = jasmine.createSpyObj('PokemonService', ['isFiltered', 'getSearchTerm', 'getPokemon', 'changeTerm']);
-  let filterStream = new BehaviorSubject(false);
-  let termStream = new BehaviorSubject('');
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
