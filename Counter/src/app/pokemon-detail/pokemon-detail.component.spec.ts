@@ -76,14 +76,15 @@ describe('PokemonDetailComponent', () => {
         map((image: string) => expect(image).toEqual("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/3.png"))
       ).subscribe();
     })
-/*
+
     it('should not load an image if a pokemon does not exist', () => {
       pokemonSpy.getOnePokemon.and.returnValue(of(null));
       component.ngOnInit();
       fixture.detectChanges();
 
+      pokemonSpy.getImage.calls.reset();
       expect(pokemonSpy.getImage).not.toHaveBeenCalled();
-    })*/
+    })
 /*
     it('should redirect if the userId does not match the pokemon userId', () => {
       userSpy.getId.and.returnValue(of(2));

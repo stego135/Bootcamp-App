@@ -50,11 +50,14 @@ export class PokemonDetailComponent implements OnInit {
     this.pokemonService.getOnePokemon(this.id).pipe(
       take(1),
       map((selectedPoke: Pokemon) => {
-        if (selectedPoke ==  null) this.router.navigate(["/error"]);
+        if (selectedPoke ==  null) {
+          this.router.navigate(["/error"]);
+          selectedPoke = {id: -1, name: "error", count: 0, userId: 0};
+        }
         this.pokemon = selectedPoke;
       })
     ).subscribe(_ => {
-      if (this.pokemon) this.getImageUrl();
+      if (this.pokemon.id != -1) this.getImageUrl();
     });
   }
   getImageUrl() {
