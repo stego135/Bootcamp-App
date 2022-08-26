@@ -84,6 +84,7 @@ describe('PokemonDetailComponent', () => {
 
       pokemonSpy.getImage.calls.reset();
       expect(pokemonSpy.getImage).not.toHaveBeenCalled();
+      expect(routerSpy.navigate).toHaveBeenCalledWith(['/error']);
     })
 /*
     it('should redirect if the userId does not match the pokemon userId', () => {
