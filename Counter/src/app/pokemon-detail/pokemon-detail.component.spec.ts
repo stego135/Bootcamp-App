@@ -2,9 +2,8 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
-import { map, Observable, of, take } from 'rxjs';
+import { map, of, take } from 'rxjs';
 import { HallOfFameService } from '../shared/hall-of-fame-service';
-import { Pokemon } from '../shared/pokemon';
 import { PokemonService } from '../shared/pokemon-service';
 import { UserService } from '../shared/user-service';
 
@@ -86,14 +85,6 @@ describe('PokemonDetailComponent', () => {
       expect(pokemonSpy.getImage).not.toHaveBeenCalled();
       expect(routerSpy.navigate).toHaveBeenCalledWith(['/error']);
     })
-/*
-    it('should redirect if the userId does not match the pokemon userId', () => {
-      userSpy.getId.and.returnValue(of(2));
-      component.ngOnInit();
-      fixture.detectChanges();
-
-      expect(routerSpy.navigate).toHaveBeenCalledWith(['/error']);
-    })*/
 
     it('should redirect if the user is not logged in', () => {
       userSpy.getLogIn.and.returnValue(of(false))

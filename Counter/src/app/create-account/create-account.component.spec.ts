@@ -80,18 +80,5 @@ describe('CreateAccountComponent', () => {
       expect(userSpy.checkEmail).toHaveBeenCalledWith("testing@test.com");
       expect(userSpy.createAccount).toHaveBeenCalledWith({email: "testing@test.com", password: "test"});
     })
-/*
-    it('should log in a user once successfully created', fakeAsync(() => {
-      let newUser = {email: "testing@test.com", password: "test"};
-      userSpy.checkEmail.and.returnValue(of([]));
-      userSpy.createAccount.and.returnValue(of([{id: 2, email: "testing@test.com", password: "test"}]));
-
-      component.onSubmit(<User>newUser);
-      tick();
-
-      expect(userSpy.createAccount).toHaveBeenCalledWith({email: "testing@test.com", password: "test"});
-      expect(userSpy.logIn).toHaveBeenCalledWith(2);
-      expect(routerSpy.navigate).toHaveBeenCalledWith(['/home']);
-    }))*/
   })
 });
