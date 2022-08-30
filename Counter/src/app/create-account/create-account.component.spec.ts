@@ -46,7 +46,7 @@ describe('CreateAccountComponent', () => {
     it('should not add a duplicate user', () => {
       let newUser = {email: "test@test.com", password: "test"};
       userSpy.checkEmail.and.returnValue(of([{id: 1, email: "test@test.com", password: "test"}]));
-      userSpy.createAccount.and.returnValue(of([{id: 1, email: "test@test.com", password: "test"}]));
+      userSpy.createAccount.and.returnValue(of({id: 1, email: "test@test.com", password: "test"}));
       userSpy.createAccount.calls.reset();
 
       component.onSubmit(<User>newUser);
@@ -58,7 +58,7 @@ describe('CreateAccountComponent', () => {
     it('should show an error if there is a duplicate user', () => {
       let newUser = {email: "test@test.com", password: "test"};
       userSpy.checkEmail.and.returnValue(of([{id: 1, email: "test@test.com", password: "test"}]));
-      userSpy.createAccount.and.returnValue(of([{id: 1, email: "test@test.com", password: "test"}]));
+      userSpy.createAccount.and.returnValue(of({id: 1, email: "test@test.com", password: "test"}));
 
       component.onSubmit(<User>newUser);
       fixture.detectChanges();
@@ -72,13 +72,27 @@ describe('CreateAccountComponent', () => {
     it('should create an account if there is no duplicate', () => {
       let newUser = {email: "testing@test.com", password: "test"};
       userSpy.checkEmail.and.returnValue(of([]));
-      userSpy.createAccount.and.returnValue(of([{id: 2, email: "testing@test.com", password: "test"}]));
+      userSpy.createAccount.and.returnValue(of({id: 2, email: "testing@test.com", password: "test"}));
       userSpy.createAccount.calls.reset();
 
       component.onSubmit(<User>newUser);
 
       expect(userSpy.checkEmail).toHaveBeenCalledWith("testing@test.com");
       expect(userSpy.createAccount).toHaveBeenCalledWith({email: "testing@test.com", password: "test"});
+    })
+
+    it('should log in and redirect to home once an acount was successfully created', () => {
+      let newUser = {email: "testing@test.com", password: "test"};
+      userSpy.checkEmail.and.returnValue(of([]));
+      userSpy.createAccount.and.returnValue(of({id: 2, email: "testing@test.com", password: "test"}));
+      userSpy.createAccount.calls.reset();
+      userSpy.logIn.calls.reset();
+
+      component.onSubmit(<User>newUser);
+
+      expect(userSpy.createAccount).toHaveBeenCalledWith({email: "testing@test.com", password: "test"});
+      expect(userSpy.logIn).toHaveBeenCalledWith(2);
+      expect(routerSpy.navigate).toHaveBeenCalledWith(['/home']);
     })
   })
 });
