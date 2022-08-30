@@ -66,6 +66,15 @@ describe('PokemonDetailComponent', () => {
       expect(component.pokemon).toEqual({id: 1, name: "Venusaur", count: 400, userId: 1});
     })
 
+    it('should redirect to home if the pokemon is null', () => {
+      pokemonSpy.getOnePokemon.and.returnValue(of(null));
+      routerSpy.navigate.calls.reset();
+
+      component.ngOnInit();
+
+      expect(routerSpy.navigate).toHaveBeenCalledWith(['/error']);
+    })
+
     it('should get the correct image from pokemonService', () => {
       component.ngOnInit();
 
@@ -87,11 +96,23 @@ describe('PokemonDetailComponent', () => {
     })
 
     it('should redirect if the user is not logged in', () => {
-      userSpy.getLogIn.and.returnValue(of(false))
+      userSpy.getLogIn.and.returnValue(of(false));
+      routerSpy.navigate.calls.reset();
+
       component.ngOnInit();
       fixture.detectChanges();
 
       expect(routerSpy.navigate).toHaveBeenCalledWith(['/notlogin']);
+    })
+
+    it('should redirect if the userId does not match the pokemon userId', () => {
+      userSpy.getId.and.returnValue(of(2));
+      routerSpy.navigate.calls.reset();
+
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      expect(routerSpy.navigate).toHaveBeenCalledWith(['/error']);
     })
 
     it('should load the pokemon name, count, and image into the page', () => {
@@ -134,6 +155,7 @@ describe('PokemonDetailComponent', () => {
   describe('goBack', () => {
     it('should redirect to the home page when clicked', () => {
       let backButton = fixture.debugElement.nativeElement.querySelector('.go-back');
+      routerSpy.navigate.calls.reset();
 
       backButton.click();
 
@@ -207,6 +229,8 @@ describe('PokemonDetailComponent', () => {
     pokemonSpy.removePokemon.and.returnValue(of(null));
     it('should redirect to the home page when clicked', () => {
       let deleteButton = fixture.debugElement.nativeElement.querySelector('.delete');
+      routerSpy.navigate.calls.reset();
+
       deleteButton.click();
       fixture.detectChanges();
       
@@ -253,6 +277,7 @@ describe('PokemonDetailComponent', () => {
     })
 
     it('should redirect to the hall page if both methods complete', () => {
+      routerSpy.navigate.calls.reset();
       let addToHall = fixture.debugElement.nativeElement.querySelector('.hall-of-fame-add');
       addToHall.click();
       fixture.detectChanges();
