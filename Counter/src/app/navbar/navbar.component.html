@@ -6,13 +6,13 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
-          <a class="nav-link" routerLink="/hall" routerLinkActive="active">Hall of Fame</a>
+          <a class="nav-link" id="home" routerLink="/home" routerLinkActive="active">Home</a>
+          <a class="nav-link" id="hall" routerLink="/hall" routerLinkActive="active">Hall of Fame</a>
         </div>
         <div class="navbar-nav ms-auto">
           <form class="d-flex" role="search">
-            <input class="form-control" type="search" placeholder="Search Current Hunts" aria-label="Search" [(ngModel)]="searchTerm" name="searchTerm">
-            <button class="btn btn-warning" type="submit" (click)="search()">Search</button>
+            <input class="form-control" type="search" placeholder="Search Current Hunts" aria-label="Search" [(ngModel)]="searchTerm" name="searchTerm" id="searchBox">
+            <button class="btn btn-warning" id="search" type="submit" (click)="search()">Search</button>
           </form>
           <button class="btn btn-danger log-button" *ngIf="isLoggedIn | async"
           (click)="logOut()">Log Out</button>

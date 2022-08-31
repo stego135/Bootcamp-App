@@ -1,5 +1,6 @@
 //These are test function
 
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
@@ -11,7 +12,7 @@ describe('AppComponent', () => {
         RouterTestingModule
       ],
       declarations: [
-        AppComponent
+        AppComponent, NavbarStubComponent
       ],
     }).compileComponents();
   });
@@ -32,6 +33,9 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('Counter app is running!');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Shiny Counter');
   });
 });
+
+@Component({selector: 'app-navbar', template: ''})
+class NavbarStubComponent { }

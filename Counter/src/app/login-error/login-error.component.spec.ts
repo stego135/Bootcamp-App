@@ -20,4 +20,12 @@ describe('LoginErrorComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('redirection', () => {
+    it('should redirect to the login page', () => {
+      let loginButton = fixture.debugElement.nativeElement.querySelector('.redirect');
+
+      expect(loginButton.getAttribute('routerLink')).toEqual('/login');
+    })
+  })
 });

@@ -20,4 +20,12 @@ describe('PageNotFoundComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('redirection', () => {
+    it('should redirect to the home page', () => {
+      let loginButton = fixture.debugElement.nativeElement.querySelector('.redirect');
+
+      expect(loginButton.getAttribute('routerLink')).toEqual('/home');
+    })
+  })
 });

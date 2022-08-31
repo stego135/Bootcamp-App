@@ -138,6 +138,7 @@ export class PokemonService {
             case "thundurus":
             case "tornadus":
             case "landorus":
+            case "enamorus":
                 return name + "-incarnate";
             case "keldeo":
                 return name + "-ordinary";

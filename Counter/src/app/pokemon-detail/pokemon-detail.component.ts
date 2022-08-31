@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common';
 import { Pokemon } from '../shared/pokemon';
 import { PokemonService } from '../shared/pokemon-service';
-import { forkJoin, Observable, map, take } from 'rxjs';
+import { forkJoin, Observable, map, take, combineLatest } from 'rxjs';
 import { HallOfFameService } from '../shared/hall-of-fame-service';
 import { UserService } from '../shared/user-service';
 
@@ -30,32 +29,38 @@ export class PokemonDetailComponent implements OnInit {
     this.getId();
     this.getPokemon();
     this.userService.getLogIn().pipe(
-        take(1),
-        map((isUser: boolean) => {
-          if (!isUser) {
-            this.router.navigate(['/notlogin'])
-          }
-        })
-      ).subscribe();
+      take(1),
+      map((isUser: boolean) => {
+        if (!isUser) {
+          this.router.navigate(['/notlogin'])
+        }
+      })
+    ).subscribe();
+    /*
     this.userService.getId().pipe(
       take(1),
       map((userId: number) => {
+        console.log('here');
+        console.log(this.pokemon.userId + " poke");
+        console.log(userId + ' user');
         if(this.pokemon.userId != userId) this.router.navigate(['/error']);
       })
-    )
+    ).subscribe();*/
   }
   getId(): void {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
   }
   getPokemon() {
-    this.pokemonService.getOnePokemon(this.id).pipe(
+    combineLatest([this.pokemonService.getOnePokemon(this.id), this.userService.getId()]).pipe(
       take(1),
-      map((selectedPoke: Pokemon) => {
-        if (selectedPoke ==  null) this.router.navigate(["/error"]);
-        this.pokemon = selectedPoke;
+      map(([selectedPoke, userId]) => {
+        if (selectedPoke ==  null || selectedPoke.userId != userId) {
+          this.router.navigate(["/error"]);
+          selectedPoke = {id: -1, name: "error", count: 0, userId: 0};
+        } else this.pokemon = selectedPoke;
       })
     ).subscribe(_ => {
-      if (this.pokemon) this.getImageUrl();
+      if (this.pokemon.id != -1) this.getImageUrl();
     });
   }
   getImageUrl() {
