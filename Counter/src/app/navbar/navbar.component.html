@@ -16,7 +16,7 @@
           </form>
           <button class="btn btn-danger log-button" *ngIf="isLoggedIn | async"
           (click)="logOut()">Log Out</button>
-          <button class="btn btn-danger log-button" *ngIf="!(isLoggedIn | async)"
+          <button class="btn btn-danger log-button" *ngIf="(isLoggedIn | async) === false"
           routerLink="/login">Log In</button>
         </div>
       </div>

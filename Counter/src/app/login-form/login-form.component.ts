@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { User } from '../shared/user';
 import { UserService } from '../shared/user-service';
 import { take, map } from 'rxjs';
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: './login-form.component.html',
   styleUrls: ['./login-form.component.css']
 })
-export class LoginFormComponent implements OnInit {
+export class LoginFormComponent {
   email!: string;
   password!: string;
   mouseOver: boolean = false;
@@ -17,9 +17,6 @@ export class LoginFormComponent implements OnInit {
 
   constructor(private userService: UserService, 
     private router: Router) { }
-
-  ngOnInit(): void {
-  }
 
   onSubmit(formValues: User) {
     this.accountError = false;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { PokemonService } from '../shared/pokemon-service';
@@ -9,7 +9,7 @@ import { UserService } from '../shared/user-service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
   searchTerm: string = "";
   isLoggedIn: Observable<boolean>;
 
@@ -18,9 +18,6 @@ export class NavbarComponent implements OnInit {
     private userService: UserService) { 
       this.isLoggedIn = this.userService.getLogIn();
     }
-
-  ngOnInit(): void {
-  }
 
   search() {
     this.router.navigate(["/home"]);
