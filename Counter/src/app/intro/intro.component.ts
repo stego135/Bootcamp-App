@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserService } from '../shared/user-service';
 
@@ -7,14 +7,11 @@ import { UserService } from '../shared/user-service';
   templateUrl: './intro.component.html',
   styleUrls: ['./intro.component.css']
 })
-export class IntroComponent implements OnInit {
+export class IntroComponent {
   isLoggedIn: Observable<boolean>;
 
   constructor(private userService: UserService) { 
     this.isLoggedIn = this.userService.getLogIn();
-  }
-
-  ngOnInit(): void {
   }
 
 }
